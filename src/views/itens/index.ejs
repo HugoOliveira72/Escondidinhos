@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cadê? - Achados e Perdidos</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; }
+    .card { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; display: flex; gap: 1rem; }
+    .card img { width: 120px; height: 120px; object-fit: cover; border-radius: 6px; }
+    .tag { font-size: .8rem; padding: .1rem .5rem; border-radius: 99px; background: #eee; }
+    form.inline { display: inline; }
+  </style>
+</head>
+<body>
+  <h1>Cadê? <small>Achados e Perdidos</small></h1>
+
+  <form method="get" action="/itens">
+    <label>Status:
+      <select name="status" onchange="this.form.submit()">
+        <option value="">Todos</option>
+        <% STATUS.forEach(s => { %>
+          <option value="<%= s %>" <%= s === status ? 'selected' : '' %>><%= s %></option>
+        <% }) %>
+      </select>
+    </label>
+    <a href="/itens/novo">+ Novo item</a>
+  </form>
+
+  <% if (itens.length === 0) { %>
+    <p>Nenhum item cadastrado.</p>
+  <% } %>
+
+  <% itens.forEach(item => { %>
+    <article class="card">
+      <% if (item.imagemUrl) { %><img src="<%= item.imagemUrl %>" alt="Foto de <%= item.nome %>"><% } %>
+      <div>
+        <h2><%= item.nome %> <span class="tag"><%= item.status %></span></h2>
+        <p><%= item.descricao %></p>
+        <p><strong>Local:</strong> <%= item.local || 'não informado' %></p>
+        <a href="/itens/<%= item.id %>/editar">Editar</a>
+        <form class="inline" method="post" action="/itens/<%= item.id %>/excluir"
+              onsubmit="return confirm('Excluir este item?')">
+          <button type="submit">Excluir</button>
+        </form>
+      </div>
+    </article>
+  <% }) %>
+</body>
+</html>

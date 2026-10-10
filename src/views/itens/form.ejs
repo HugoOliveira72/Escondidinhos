@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Item - Cadê?</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 600px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; }
+    label { display: block; margin-top: 1rem; }
+    input, textarea, select { width: 100%; padding: .5rem; box-sizing: border-box; }
+    .erro { color: #b00020; }
+  </style>
+</head>
+<body>
+  <h1><%= item.id ? 'Editar item' : 'Novo item' %></h1>
+
+  <% erros.forEach(e => { %><p class="erro" role="alert"><%= e %></p><% }) %>
+
+  <form method="post" action="<%= acao %>">
+    <label>Nome
+      <input name="nome" value="<%= item.nome || '' %>" required>
+    </label>
+    <label>Descrição
+      <textarea name="descricao" rows="3"><%= item.descricao || '' %></textarea>
+    </label>
+    <label>Local onde foi perdido/encontrado
+      <input name="local" value="<%= item.local || '' %>">
+    </label>
+    <label>URL da imagem
+      <input name="imagemUrl" value="<%= item.imagemUrl || '' %>">
+    </label>
+    <label>Status
+      <select name="status">
+        <% STATUS.forEach(s => { %>
+          <option value="<%= s %>" <%= (item.status || 'perdido') === s ? 'selected' : '' %>><%= s %></option>
+        <% }) %>
+      </select>
+    </label>
+    <p><button type="submit">Salvar</button> <a href="/itens">Cancelar</a></p>
+  </form>
+</body>
+</html>
