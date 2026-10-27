@@ -1,0 +1,27 @@
+// MODEL - definição da tabela "itens".
+// Para mudar a tabela: altere este arquivo e rode
+//   npx prisma migrate dev --name descricao_da_mudanca
+//   npx prisma generate
+// O client gerado fica em src/generated/prisma (tipos e consultas).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Item {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  descricao String?
+  local     String?
+  imagemUrl String?
+  status    String   @default("perdido")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("itens")
+}

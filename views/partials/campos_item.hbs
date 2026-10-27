@@ -1,0 +1,35 @@
+{{!-- Campos do formulário, usados no cadastro e na edição (não repetir HTML).
+     Recebe: valores (dados do item), erros ({campo: mensagem}), opcoesStatus. --}}
+<label>
+  Nome
+  <input name="nome" value="{{valores.nome}}" required>
+  {{#if erros.nome}}<small class="erro">{{erros.nome}}</small>{{/if}}
+</label>
+
+<label>
+  Descrição
+  <textarea name="descricao" rows="3">{{valores.descricao}}</textarea>
+  {{#if erros.descricao}}<small class="erro">{{erros.descricao}}</small>{{/if}}
+</label>
+
+<label>
+  Local onde foi perdido/encontrado
+  <input name="local" value="{{valores.local}}">
+  {{#if erros.local}}<small class="erro">{{erros.local}}</small>{{/if}}
+</label>
+
+<label>
+  URL da imagem
+  <input name="imagemUrl" value="{{valores.imagemUrl}}">
+  {{#if erros.imagemUrl}}<small class="erro">{{erros.imagemUrl}}</small>{{/if}}
+</label>
+
+<label>
+  Status
+  <select name="status">
+    {{#each opcoesStatus}}
+      <option value="{{valor}}" {{#if selecionado}}selected{{/if}}>{{valor}}</option>
+    {{/each}}
+  </select>
+  {{#if erros.status}}<small class="erro">{{erros.status}}</small>{{/if}}
+</label>

@@ -1,0 +1,29 @@
+{{!-- Início de toda página: cabeçalho e estilos. Usa a variável "titulo". --}}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{titulo}}</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 0 1rem; color: #1a1a1a; }
+    header, footer { padding: 1rem 0; border-bottom: 1px solid #ccc; }
+    footer { border-top: 1px solid #ccc; border-bottom: 0; margin-top: 2rem; }
+    nav a { margin-right: 1rem; }
+    input, select, textarea { padding: .4rem; margin: .2rem 0; width: 100%; box-sizing: border-box; }
+    button { padding: .4rem .8rem; margin-top: .4rem; }
+    label { display: block; margin-top: .8rem; }
+    ul { list-style: none; padding: 0; }
+    li { border: 1px solid #ccc; border-radius: 8px; padding: .75rem; margin-bottom: .75rem; }
+    li form { display: inline; }
+    .aviso { background: #e6f4ea; color: #0b5a1e; padding: .5rem 1rem; border-radius: 6px; }
+    .erro { color: #8a1c14; display: block; }
+    .contagem { font-weight: 600; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Cadê? <small>Achados e Perdidos</small></h1>
+    <nav><a href="/">Lista de Itens</a></nav>
+  </header>
+  <main>

@@ -1,0 +1,11 @@
+{{> topo}}
+
+<h2>Editar item</h2>
+<form method="POST" action="/editar/{{item.id}}">
+  {{> campos_item form}}
+  <button type="submit">Salvar</button>
+</form>
+
+<p><a href="/">Cancelar</a></p>
+
+{{> rodape}}
