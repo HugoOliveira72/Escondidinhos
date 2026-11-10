@@ -1,0 +1,22 @@
+{
+  "name": "cade-mvc",
+  "version": "3.0.0",
+  "description": "Cadê? - Achados e perdidos (MVC + ORM + DAO + SQLite), estruturado como o projeto-integrador-web2 (Flask)",
+  "main": "src/app.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "node --watch src/app.js",
+    "consultar": "node consultar.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.18.0",
+    "sequelize": "^6.37.3",
+    "sqlite3": "^5.1.7"
+  }
+}

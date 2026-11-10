@@ -1,0 +1,19 @@
+<h2>Editar item</h2>
+
+<% erros.forEach(function (e) { %><p class="erro" role="alert"><%= e %></p><% }) %>
+
+<!-- O formulário abre já preenchido com os valores atuais -->
+<form method="post" action="/editar/<%= item.id %>">
+  <input name="nome" aria-label="Nome do item" value="<%= item.nome || '' %>" required>
+  <input name="descricao" aria-label="Descrição" value="<%= item.descricao || '' %>">
+  <input name="local" aria-label="Local" value="<%= item.local || '' %>">
+  <input name="imagemUrl" aria-label="URL da imagem" value="<%= item.imagemUrl || '' %>">
+  <select name="status" aria-label="Status">
+    <% STATUS.forEach(function (s) { %>
+      <option value="<%= s %>" <%= item.status === s ? 'selected' : '' %>><%= s %></option>
+    <% }) %>
+  </select>
+  <button type="submit">Salvar</button>
+</form>
+
+<p><a href="/">Cancelar</a></p>
