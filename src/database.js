@@ -1,17 +1,22 @@
-// Equivalente a database.py do projeto Flask.
-const { db } = require('./extensions');
-require('./models/Item'); // registra o model no ORM antes de criar as tabelas
+const { PrismaClient } = require('@prisma/client');
+const { PrismaBetterSqlite3 } = require('@prisma/adapter-better-sqlite3');
+const path = require('path');
 
-// Flask: conectar_banco(app) -> aqui só confirma que a conexão funciona,
-// pois o Sequelize já recebeu a configuração em extensions/index.js.
+// Caminho absoluto para o banco SQLite na pasta instance/
+const dbPath = path.join(__dirname, '..', 'instance', 'itens.db');
+
+// Instancia o adaptador BetterSqlite3 apontando para o arquivo local
+const adapter = new PrismaBetterSqlite3({ url: `file:${dbPath}` });
+
+// Passa o adaptador para o construtor do PrismaClient
+const prisma = new PrismaClient({ adapter });
+
 async function conectarBanco() {
-  await db.authenticate();
+  await prisma.$connect();
 }
 
-// Flask: criar_tabelas(app) -> db.create_all()   |   Sequelize: db.sync()
-// Cria as tabelas que ainda não existem (não altera as que já existem).
 async function criarTabelas() {
-  await db.sync();
+  console.log('Banco de dados conectado via Prisma Better-SQLite3 Adapter.');
 }
 
-module.exports = { conectarBanco, criarTabelas };
+module.exports = { prisma, conectarBanco, criarTabelas };

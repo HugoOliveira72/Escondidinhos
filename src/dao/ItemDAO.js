@@ -1,36 +1,38 @@
-// DAO (Data Access Object) - equivalente a dao/evento_dao.py.
-// Concentra o acesso aos dados. O Controller não conhece o ORM nem SQL.
-//
-// Diferença importante: no Python as chamadas são síncronas; aqui o banco
-// responde de forma assíncrona, então os métodos usam async/await.
-const Item = require('../models/Item');
+const { prisma } = require('../database');
 
 class ItemDAO {
-  // Python: db.session.add(evento); db.session.commit()
-  static async salvar(item) {
-    await item.save();
+  static async salvar(dados) {
+    return await prisma.item.create({
+      data: dados,
+    });
   }
 
-  // Python: Evento.query.all()  -> devolve uma lista de objetos
-  static listar() {
-    return Item.findAll({ order: [['id', 'DESC']] });
+  static async listar() {
+    return await prisma.item.findMany({
+      orderBy: { id: 'desc' },
+    });
   }
 
-  // Python: db.session.get(Evento, id)  -> objeto ou None   (aqui: ou null)
-  static buscarPorId(id) {
-    return Item.findByPk(id);
+  static async buscarPorId(id) {
+    return await prisma.item.findUnique({
+      where: { id: Number(id) },
+    });
   }
 
-  // Python: altera os atributos e faz commit; o ORM gera o UPDATE sozinho.
-  static async atualizar(item, dados) {
-    item.set(dados);
-    await item.save();
+  static async atualizar(id, dados) {
+    return await prisma.item.update({
+      where: { id: Number(id) },
+      data: dados,
+    });
   }
 
-  // Python: db.session.delete(evento); db.session.commit()
-  static async deletar(item) {
-    await item.destroy();
+  static async deletar(id) {
+    return await prisma.item.delete({
+      where: { id: Number(id) },
+    });
   }
 }
+
+ItemDAO.STATUS = ['perdido', 'encontrado', 'devolvido'];
 
 module.exports = ItemDAO;
