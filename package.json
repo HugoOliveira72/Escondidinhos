@@ -1,0 +1,29 @@
+{
+  "name": "cade-mvc",
+  "version": "3.0.0",
+  "description": "Cadê? - Achados e perdidos (MVC + ORM + DAO + SQLite), estruturado como o projeto-integrador-web2 (Flask)",
+  "main": "src/app.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "node --watch src/app.js",
+    "consultar": "node consultar.js",
+    "postinstall": "prisma skills sync || exit 0"
+  },
+  "dependencies": {
+    "@prisma/adapter-better-sqlite3": "^7.10.1",
+    "@prisma/client": "^7.10.1",
+    "better-sqlite3": "^13.0.3",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.18.0",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "node-gyp": "^12.1.0",
+    "prisma": "^7.10.1"
+  }
+}

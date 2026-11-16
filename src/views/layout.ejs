@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Jinja2: {% block title %}  |  EJS: variável "title" enviada pelo controller -->
+  <title><%= typeof title !== 'undefined' ? title : 'Cadê?' %></title>
+  <!-- Jinja2: url_for('static', filename='css/style.css')  |  Express: public/css/style.css -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Cadê? <small>Achados e Perdidos</small></h1>
+    <nav><a href="/">Lista de Itens</a></nav>
+  </header>
+
+  <main>
+    <!-- Jinja2: get_flashed_messages() -->
+    <% mensagens.forEach(function (m) { %>
+      <p class="aviso" role="status"><%= m %></p>
+    <% }) %>
+
+    <!-- Jinja2: {% block content %}{% endblock %} -->
+    <%- body %>
+  </main>
+
+  <footer>
+    <p>© Projeto Interdisciplinar DSM 2026 - FATEC Porto Ferreira.</p>
+  </footer>
+</body>
+</html>
