@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8"><title>Pesquisa</title><link rel="stylesheet" href="style.css"></head>
+<body>
+  <div class="screen-container">
+    <header class="app-header">
+      <div class="logo-area"><a href="page7.html"><img src="./IMG/Logo.png" alt=""></a></div>
+      <div class="search-bar"><input type="text" placeholder="Procure aqui seu item!" ></div>
+      <div class="header-icons"><span onclick="adicionar()"><div ><img src="IMG/Adicionar.png" alt="">
+        <div id="addContainer">
+          <div id="add"><a href="page31.html" id="add"> <img src="./IMG/Adicionar.png" alt=""> Meus Alertas</a></div>
+          <div id="add"> <a href="page34.html" id="add"><img src="./IMG/Adicionar.png" alt="">Meus Achados</a></div>
+          <div id="add"> <a href="page20.html" id="add"><img src="./IMG/AltAltoFalante.png" alt="">Cadastrar Achado</a></div>
+          <div id="add"> <a href="page21.html" id="add"><img src="./IMG/Adicionar.png" alt="">Cadastrar Item Perdido</a></div>
+        </div>
+       </div></span><span><img src="IMG/Barra_de_menu.png" alt=""></span><span><a href="page9.html"><img src="./IMG/Sino.png" alt=""></a></span><a href="page2.html" style="color:white; text-decoration:none;"><img src="./IMG/login.png" alt="" width="50px"></a></div>
+    </header>      <div class="header-icons"><span><img src="IMG/Adicionar.png" alt=""></span><span><img src="IMG/Barra_de_menu.png" alt=""></span><span><a href="page9.html"><img src="./IMG/Sino.png" alt=""></a></span><a href="page2.html" style="color:white; text-decoration:none;">Entrar</a></div>
+    <div class="content-body">
+      <p>Exibindo 1.001 resultados para "Powerbank".</p>
+      <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:15px;">
+        <div class="card-box" onclick="openModal()" style="height:140px; display:flex; flex-direction:column; justify-content:center; align-items:center;">🖼<small style="margin-top:5px;">Powerbank Branco</small></div>
+        <div class="card-box" style="height:140px;"></div>
+        <div class="card-box" style="height:140px;"></div>
+        <div class="card-box" style="height:140px;"></div>
+      </div>
+    </div>
+
+    <!-- Integrated Preview Modal -->
+    <div class="modal-overlay" id="previewModal">
+      <div class="modal-content">
+        <div class="card-box" style="height:120px;">🖼</div>
+        <h3>Powerbank Branco</h3>
+        <a href="page12.html" class="btn-black">Ver Mais</a>
+        <button onclick="closeModal()" class="btn-red" style="background:#718096; padding:8px;">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openModal() { document.getElementById('previewModal').classList.add('active'); }
+    function closeModal() { document.getElementById('previewModal').classList.remove('active'); }
+  </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+:root {
+  --primary-red: #cc0000;
+  --primary-hover: #b30000;
+  --bg-color: #f5f5f5;
+  --card-bg: #ffffff;
+  --text-main: #000000;
+  --text-muted: #555555;
+  --border-color: #cccccc;
+  --cor-radio-border:#a0a0a0;
+  --cor-radio-background:#e0e0e0;
+  --cor-checked-radio-background:hsl(0, 0%, 62%);
+  --cor-checked-radio-border:#8d8d8d;
+  --cor-checked-radio-bg-after:#555555;
+  --cor-form-border:#8c8c8c;
+  --cor-border:#c8d1d9;
+}
+
+body{
+    display: flex;
+    justify-self: center;
+    width: 90%;
+    border-left: var(--cor-border) 20px solid;
+    border-right: var(--cor-border) 20px solid;
+}
+html{
+    background-color: var(--primary-red);
+}
+h2{
+    display: flex;
+    font-size: 50px;
+    justify-content: center ;
+}
+
+#registerItemBtn{
+    width: 100px;
+}
