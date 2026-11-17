@@ -1,0 +1,17 @@
+<h2>Cadastro de Novo Usuário</h2>
+
+<form method="post" action="/usuarios/cadastrar">
+  <input type="text" name="nome" placeholder="Nome Completo" required>
+  <input type="text" name="contato" placeholder="E-mail ou Contato">
+  <input type="password" name="senha" placeholder="Senha" required>
+  
+  <label for="tipoUser">Tipo de Usuário:</label>
+  <select name="tipoUser" id="tipoUser">
+    <option value="0">Usuário Comum</option>
+    <option value="1">Administrador (Secretaria)</option>
+  </select>
+
+  <button type="submit">Cadastrar</button>
+</form>
+
+<p><a href="/usuarios/login">Já possui conta? Faça login</a> | <a href="/">Voltar ao Feed</a></p>s

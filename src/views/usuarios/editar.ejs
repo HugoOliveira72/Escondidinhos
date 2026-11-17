@@ -1,0 +1,17 @@
+<h2>Editar Usuário</h2>
+
+<form method="post" action="/usuarios/editar/<%= usuario.idUser %>">
+  <input type="text" name="nome" value="<%= usuario.nome %>" placeholder="Nome Completo" required>
+  <input type="text" name="contato" value="<%= usuario.contato || '' %>" placeholder="E-mail ou Contato">
+  <input type="password" name="senha" placeholder="Nova Senha (deixe em branco para manter)">
+  
+  <label for="tipoUser">Tipo de Usuário:</label>
+  <select name="tipoUser" id="tipoUser">
+    <option value="0" <%= usuario.tipoUser === 0 ? 'selected' : '' %>>Usuário Comum</option>
+    <option value="1" <%= usuario.tipoUser === 1 ? 'selected' : '' %>>Administrador (Secretaria)</option>
+  </select>
+
+  <button type="submit">Salvar Alterações</button>
+</form>
+
+<p><a href="/usuarios">Cancelar</a></p>

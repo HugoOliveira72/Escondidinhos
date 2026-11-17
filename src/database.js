@@ -1,11 +1,18 @@
 const { PrismaClient } = require('@prisma/client');
 const { PrismaBetterSqlite3 } = require('@prisma/adapter-better-sqlite3');
 const path = require('path');
+const fs = require('fs');
 
-// Caminho absoluto para o banco SQLite na pasta instance/
-const dbPath = path.join(__dirname, '..', 'instance', 'itens.db');
+// Garante que a pasta instance/ exista no disco
+const instanceDir = path.join(__dirname, '..', 'instance');
+if (!fs.existsSync(instanceDir)) {
+  fs.mkdirSync(instanceDir, { recursive: true });
+}
 
-// Instancia o adaptador BetterSqlite3 apontando para o arquivo local
+// Caminho absoluto para o banco SQLite
+const dbPath = path.join(instanceDir, 'itens.db');
+
+// Instancia o adaptador BetterSqlite3
 const adapter = new PrismaBetterSqlite3({ url: `file:${dbPath}` });
 
 // Passa o adaptador para o construtor do PrismaClient

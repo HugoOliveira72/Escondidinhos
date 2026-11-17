@@ -18,3 +18,15 @@ model Item {
 
   @@map("itens")
 }
+
+model User {
+  idUser    Int      @id @default(autoincrement())
+  nome      String
+  senha     String
+  contato   String?
+  tipoUser  Int      @default(0) // 0: Comum, 1: Administrador
+  createdAt DateTime @default(now())
+  UpdatedAt DateTime @updatedAt
+
+  @@map("Usuario")
+}

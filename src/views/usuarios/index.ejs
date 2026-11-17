@@ -1,0 +1,35 @@
+<h2>Gerenciamento de Usuários</h2>
+
+<p><a href="/usuarios/cadastrar">Novo Cadastro</a> | <a href="/">Voltar ao Feed</a></p>
+
+<% if (usuarios && usuarios.length > 0) { %>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Contato</th>
+        <th>Tipo</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% usuarios.forEach(function(u) { %>
+        <tr>
+          <td><%= u.idUser %></td>
+          <td><%= u.nome %></td>
+          <td><%= u.contato || '-' %></td>
+          <td><%= u.tipoUser === 1 ? 'Administrador' : 'Comum' %></td>
+          <td>
+            <a href="/usuarios/editar/<%= u.idUser %>">Editar</a>
+            <form method="post" action="/usuarios/excluir/<%= u.idUser %>" style="display:inline;" onsubmit="return confirm('Deseja excluir este usuário?')">
+              <button type="submit">Excluir</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } else { %>
+  <p>Nenhum usuário cadastrado.</p>
+<% } %>

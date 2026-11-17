@@ -1,0 +1,10 @@
+-- CreateTable
+CREATE TABLE "Usuario" (
+    "idUser" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "nome" TEXT NOT NULL,
+    "senha" TEXT NOT NULL,
+    "contato" TEXT,
+    "tipoUser" INTEGER NOT NULL DEFAULT 0,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "UpdatedAt" DATETIME NOT NULL
+);

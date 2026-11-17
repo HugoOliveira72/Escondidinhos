@@ -1,0 +1,14 @@
+<h2>Login no Sistema</h2>
+
+<% if (typeof erro !== 'undefined' && erro) { %>
+  <p class="erro" role="alert"><%= erro %></p>
+<% } %>
+
+<form method="post" action="/usuarios/login">
+  <input type="text" name="contato" placeholder="E-mail ou Contato" required>
+  <input type="password" name="senha" placeholder="Senha" required>
+  <button type="submit">Entrar</button>
+</form>
+
+<p>Não tem uma conta? <a href="/usuarios/cadastrar">Cadastre-se aqui</a></p>
+<p><a href="/">Voltar para o Feed</a></p>
