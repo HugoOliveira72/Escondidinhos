@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Entrar</title>
+    <link rel="stylesheet" href="registerOrLogin.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased bg-white">
+
+    <!-- Top Header Banner with Curved Wave -->
+    <header class="w-full relative header-shadow">
+        <svg class="w-full h-24 sm:h-28 md:h-32 block" viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Grey outline line underneath -->
+            <path d="M0,0 L1440,0 L1440,75 C1050,115 390,75 0,105 Z" fill="#b0b0b0"></path>
+            <!-- Solid Red Banner -->
+            <path d="M0,0 L1440,0 L1440,70 C1050,110 390,70 0,100 Z" fill="#c00d0d"></path>
+        </svg>
+    </header>
+
+    <!-- Main Login Container -->
+    <main class="flex-grow flex items-center justify-center px-4 py-8">
+        <div class="w-full max-w-[380px] sm:max-w-[400px]">
+            
+            <!-- Page Heading -->
+            <h1 class="text-4xl sm:text-5xl font-bold text-center text-black mb-6 tracking-tight">
+                Entrar
+            </h1>
+
+            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-5">
+                
+                <!-- User Type Selector (Radio options) -->
+                <div class="flex items-center justify-center space-x-10 py-1">
+                    <label class="inline-flex items-center space-x-2.5 cursor-pointer text-gray-800 font-medium text-lg">
+                        <input type="radio" name="userType" value="aluno" class="custom-radio" checked>
+                        <span>Aluno</span>
+                    </label>
+                    <label class="inline-flex items-center space-x-2.5 cursor-pointer text-gray-800 font-medium text-lg">
+                        <input type="radio" name="userType" value="adm" class="custom-radio" id="adm" onclick="Adm()">
+                        <span>ADM</span>
+                    </label>
+                </div>
+
+                <!-- Matrícula ou CPF Field -->
+                <div class="space-y-1">
+                    <label for="identifier" class="block text-gray-800 font-normal text-base sm:text-lg" id="identifier">
+                        Matrícula ou CPF
+                    </label>
+                    <input 
+                        type="text" 
+                        id="identifier" 
+                        name="identifier" 
+                        required
+                        autocomplete="username"
+                        class="form-input w-full px-3 py-2 text-gray-900 text-base bg-white focus:bg-white"
+                    >
+                </div>
+
+                <!-- Senha Field with Toggle -->
+                <div class="space-y-1">
+                    <label for="password" class="block text-gray-800 font-normal text-base sm:text-lg">
+                        Senha
+                    </label>
+                    <div class="relative flex items-center">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            required
+                            autocomplete="current-password"
+                            class="form-input w-full pl-3 pr-20 py-2 text-gray-900 text-base bg-white"
+                        >
+                        <button 
+                            type="button" 
+                            id="togglePasswordBtn"
+                            onclick="togglePasswordVisibility()"
+                            class="absolute right-2.5 text-gray-800 hover:text-black font-normal text-base px-1 focus:outline-none select-none transition-colors"
+                        >
+                            Mostrar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-3">
+                    <a href="page7.html">
+                    <button 
+                        type="submit" 
+                        class="w-full bg-brand-red hover:bg-red-700 active:bg-red-800 text-white font-bold text-xl py-2.5 rounded-sm transition-colors duration-150 shadow-sm focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-1"
+                    >
+                        Login
+                    </button>
+                    </a>
+                </div>
+
+                <!-- Footer Navigation Links -->
+                <div class="flex items-center justify-between text-sm sm:text-base text-gray-800 pt-1 font-normal">
+                    <a href="page6.html" class="hover:underline hover:text-black transition-colors">
+                        Não tenho cadastro
+                    </a>
+                    <a href="page4.html" class="hover:underline hover:text-black transition-colors">
+                        Esqueci minha senha
+                    </a>
+                </div>
+
+            </form>
+
+            <!-- Message Notification Container -->
+            <div id="toastMessage" class="hidden mt-6 p-3 text-center text-sm rounded border"></div>
+
+        </div>
+    </main>
+
+    <!-- Bottom Spacing / Footer area -->
+    <footer class="w-full py-4"></footer>
+    <script>
+         function togglePasswordVisibility() {
+             var x = document.getElementById("password");
+                if (x.type === "password"){
+                 x.type = "text"; 
+                }else{
+                     x.type = "password"; 
+                    } 
+                }
+    </script>
+</body>
+</html>
