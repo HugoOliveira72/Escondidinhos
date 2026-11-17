@@ -1,11 +1,339 @@
-body { font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 0 1rem; color: #1a1a1a; background: #fff; }
-header, footer { padding: 1rem 0; border-bottom: 1px solid #ccc; }
-footer { border-top: 1px solid #ccc; border-bottom: 0; margin-top: 2rem; }
-nav a { margin-right: 1rem; }
-form input, form select { padding: .4rem; margin: .2rem .2rem .2rem 0; }
-ul { list-style: none; padding: 0; }
-li { border: 1px solid #ccc; border-radius: 8px; padding: .75rem; margin-bottom: .75rem; }
-li form { display: inline; }
-.aviso { background: #e6f4ea; color: #0b5a1e; padding: .5rem 1rem; border-radius: 6px; }
-.erro  { background: #fdecea; color: #8a1c14; padding: .5rem 1rem; border-radius: 6px; }
-.contagem { font-weight: 600; }
+
+/* =========================================
+   CADÊ? - ACHADOS E PERDIDOS
+   Identidade visual: vermelho moderno
+========================================= */
+
+:root {
+  --primary: #c62828;
+  --primary-dark: #991b1b;
+  --primary-light: #fee2e2;
+
+  --background: #f8f8fa;
+  --surface: #ffffff;
+
+  --text: #252525;
+  --text-muted: #777777;
+
+  --border: #e8e8e8;
+  --success: #16834a;
+  --danger: #dc2626;
+
+  --radius: 12px;
+  --shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+}
+
+/* RESET */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* CABEÇALHO */
+
+header {
+  background: linear-gradient(135deg, #b91c1c, #dc2626);
+  color: white;
+  padding: 22px 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
+  box-shadow: 0 3px 12px rgba(153, 27, 27, 0.2);
+}
+
+header h1 {
+  font-size: 27px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+header h1 small {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  opacity: 0.85;
+}
+
+header nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 10px 17px;
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+header nav a:hover {
+  background: white;
+  color: var(--primary);
+}
+
+/* CONTEÚDO PRINCIPAL */
+
+main {
+  width: 90%;
+  max-width: 1150px;
+  margin: 35px auto;
+  min-height: 65vh;
+}
+
+/* TÍTULOS */
+
+h2 {
+  font-size: 25px;
+  margin-bottom: 22px;
+  color: var(--text);
+}
+
+h3 {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+/* FORMULÁRIOS */
+
+form {
+  background: var(--surface);
+  padding: 25px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 30px;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+input,
+textarea,
+select {
+  display: block;
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 17px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(198, 40, 40, 0.1);
+}
+
+textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+/* BOTÕES */
+
+button,
+.btn {
+  display: inline-block;
+  border: none;
+  border-radius: 8px;
+  padding: 11px 19px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+button[type="submit"],
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+button[type="submit"]:hover,
+.btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.btn-edit {
+  background: #fff0e0;
+  color: #a65b00;
+}
+
+.btn-edit:hover {
+  background: #ffe0b5;
+}
+
+.btn-delete {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.btn-delete:hover {
+  background: #fecaca;
+}
+
+/* LISTAGEM DE ITENS */
+
+.itens-container,
+.lista-itens,
+.grid-itens {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 22px;
+}
+
+/* CARDS */
+
+.item-card,
+.card-item {
+  background: var(--surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.item-card:hover,
+.card-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 9px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* IMAGENS DOS ITENS */
+
+.item-card img,
+.card-item img,
+.item-imagem {
+  display: block;
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  background: #f1f1f1;
+}
+
+.item-conteudo {
+  padding: 18px;
+}
+
+.item-conteudo h3 {
+  color: var(--primary-dark);
+  margin-bottom: 8px;
+}
+
+.item-conteudo p {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 9px;
+}
+
+/* STATUS DOS ITENS */
+
+.status {
+  display: inline-block;
+  padding: 5px 11px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.status-perdido {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.status-encontrado {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-devolvido {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+/* AÇÕES DOS CARDS */
+
+.item-acoes {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+/* MENSAGENS FLASH */
+
+.aviso {
+  padding: 13px 17px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  background: #fee2e2;
+  color: #991b1b;
+  border-left: 4px solid var(--primary);
+  font-size: 14px;
+}
+
+/* RODAPÉ */
+
+footer {
+  text-align: center;
+  padding: 23px;
+  margin-top: 50px;
+  background: #252525;
+  color: #cccccc;
+  font-size: 13px;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 650px) {
+  header {
+    padding: 20px 5%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  main {
+    width: 92%;
+    margin: 25px auto;
+  }
+
+  form {
+    padding: 18px;
+  }
+
+  .itens-container,
+  .lista-itens,
+  .grid-itens {
+    grid-template-columns: 1fr;
+  }
+
+  .item-card img,
+  .card-item img,
+  .item-imagem {
+    height: 230px;
+  }
+}
