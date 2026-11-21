@@ -2,8 +2,8 @@ const path = require('path');
 const express = require('express');
 const session = require('express-session');
 const expressLayouts = require('express-ejs-layouts');
-const itemRouter = require('./controllers/ItemController');
-const userRoutes = require('./routes/userRoutes'); // Rotas de login e CRUD de usuários
+const postagemRouter = require('./controllers/PostagemController');
+const userRoutes = require('./routes/userRoutes');
 const { carregarMensagens } = require('./extensions/flash');
 const { conectarBanco, criarTabelas } = require('./database');
 
@@ -36,12 +36,11 @@ app.use((req, res, next) => {
 });
 
 // Registro das Rotas do Sistema
-app.use('/usuarios', userRoutes); // Prefixo /usuarios para autenticação e gestão
-app.use(itemRouter);
+app.use('/usuarios', userRoutes);
+app.use(postagemRouter);
 
 module.exports = app;
 
-// Inicialização do Servidor
 if (require.main === module) {
   const PORT = process.env.PORT || 3000;
   (async () => {

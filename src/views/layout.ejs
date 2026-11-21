@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>
-    <%= typeof title !== 'undefined' ? title : 'Cadê?' %>
+    <%= typeof title !=='undefined' ? title : 'Cadê?' %>
   </title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -14,11 +14,14 @@
   <header>
     <h1>Cadê? <small>Achados e Perdidos</small></h1>
     <nav>
-      <a href="/">Lista de Itens</a>
+      <a href="/">Postagens</a>
       <% if (usuarioLogado) { %>
-        <span>Logado como: <strong><%= usuarioLogado.nome %></strong></span>
+        <span>Logado como: <strong>
+            <%= usuarioLogado.nome %>
+          </strong></span>
         <a href="/usuarios/logout">Sair</a>
-      <% } %>
+        <% } %>
+    </nav>
     </nav>
   </header>
 
@@ -27,9 +30,9 @@
       <p class="<%= m.tipo || 'aviso' %>" role="<%= m.tipo === 'erro' ? 'alert' : 'status' %>">
         <%= m.texto || m %>
       </p>
-    <% }) %>
+      <% }) %>
 
-    <%- body %>
+        <%- body %>
   </main>
 
   <footer>

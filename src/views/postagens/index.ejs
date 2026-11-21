@@ -1,0 +1,89 @@
+<% const ehAdmin = typeof usuarioLogado !== 'undefined' && usuarioLogado && usuarioLogado.tipo === 1; %>
+
+<% if (ehAdmin) { %>
+  <section class="card-publicar">
+    <h2>Nova Postagem</h2>
+
+    <% erros.forEach(function (e) { %><p class="erro" role="alert"><%= e %></p><% }) %>
+
+    <form method="post" action="/">
+      <fieldset style="border: 1px solid #ccc; padding: .75rem; border-radius: 6px; margin-bottom: .75rem;">
+        <legend><strong>Dados do Item</strong></legend>
+        <input name="nome" aria-label="Nome do item" placeholder="Nome do item" value="<%= form.nome || '' %>" required>
+
+        <select name="categoria" aria-label="Categoria" required>
+          <option value="">Selecione a categoria...</option>
+          <% CATEGORIAS.forEach(function (cat) { %>
+            <option value="<%= cat %>" <%= form.categoria === cat ? 'selected' : '' %>><%= cat %></option>
+          <% }) %>
+        </select>
+
+        <input name="cor" aria-label="Cor do item" placeholder="Cor (ex: Preto, Azul)" value="<%= form.cor || '' %>">
+      </fieldset>
+
+      <fieldset style="border: 1px solid #ccc; padding: .75rem; border-radius: 6px; margin-bottom: .75rem;">
+        <legend><strong>Dados da Postagem</strong></legend>
+
+        <select name="status" aria-label="Status">
+          <% STATUS.forEach(function (s) { %>
+            <option value="<%= s %>" <%= (form.status || 'perdido') === s ? 'selected' : '' %>><%= s %></option>
+          <% }) %>
+        </select>
+
+        <input name="local" aria-label="Local" placeholder="Local" value="<%= form.local || '' %>">
+
+        <label for="data_encontrado">Data que foi encontrado:</label>
+        <input type="date" id="data_encontrado" name="data_encontrado" value="<%= form.data_encontrado || '' %>">
+
+        <div style="margin-top: .5rem;">
+          <textarea name="descricao" rows="3" style="width: 100%;" placeholder="Descrição da postagem..."><%= form.descricao || '' %></textarea>
+        </div>
+      </fieldset>
+
+      <button type="submit">Publicar Postagem</button>
+    </form>
+  </section>
+<% } %>
+
+<h2>Postagens</h2>
+
+<% if (postagens.length > 0) { %>
+  <p class="contagem"><%= postagens.length %> postagem(ns) cadastrada(s).</p>
+
+  <% postagens.forEach(function (p) { %>
+    <article class="post-card">
+      <header class="post-cabecalho">
+        <div>
+          <strong>#<%= p.id_postagem %> — <%= p.item ? p.item.nome : 'Item sem nome' %></strong>
+          <span class="badge-status status-<%= p.status %>"><%= p.status.toUpperCase() %></span>
+        </div>
+        <small>Publicado em: <%= new Date(p.data_publicacao).toLocaleString('pt-BR') %></small>
+      </header>
+
+      <p>
+        <strong>Categoria:</strong> <%= p.item ? p.item.categoria : '-' %>
+        <% if (p.item && p.item.cor) { %> | <strong>Cor:</strong> <%= p.item.cor %><% } %>
+        <% if (p.local) { %> | <strong>Local:</strong> <%= p.local %><% } %>
+      </p>
+
+      <% if (p.data_encontrado) { %>
+        <p><strong>Data que foi encontrado:</strong> <%= new Date(p.data_encontrado).toLocaleDateString('pt-BR') %></p>
+      <% } %>
+
+      <% if (p.descricao) { %>
+        <p><%= p.descricao %></p>
+      <% } %>
+
+      <% if (ehAdmin) { %>
+        <footer class="post-rodape">
+          <a href="/editar/<%= p.id_postagem %>">Editar</a>
+          <form method="post" action="/deletar/<%= p.id_postagem %>" style="display:inline;" onsubmit="return confirm('Excluir esta postagem e o item vinculado?')">
+            <button type="submit">Excluir</button>
+          </form>
+        </footer>
+      <% } %>
+    </article>
+  <% }) %>
+<% } else { %>
+  <p class="contagem">Nenhuma postagem cadastrada.</p>
+<% } %>

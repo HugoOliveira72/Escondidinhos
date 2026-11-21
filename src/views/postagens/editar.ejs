@@ -1,0 +1,48 @@
+<h2>Editar Postagem #<%= postagem.id_postagem %></h2>
+
+<% erros.forEach(function (e) { %><p class="erro" role="alert"><%= e %></p><% }) %>
+
+<%
+  const dataEncontradaFormatada = postagem.data_encontrado
+    ? new Date(postagem.data_encontrado).toISOString().split('T')[0]
+    : '';
+%>
+
+<form method="post" action="/editar/<%= postagem.id_postagem %>">
+  <fieldset style="border: 1px solid #ccc; padding: .75rem; border-radius: 6px; margin-bottom: .75rem;">
+    <legend><strong>Dados do Item</strong></legend>
+    <input name="nome" aria-label="Nome do item" placeholder="Nome do item" value="<%= postagem.item ? postagem.item.nome : '' %>" required>
+
+    <select name="categoria" aria-label="Categoria" required>
+      <option value="">Selecione a categoria...</option>
+      <% CATEGORIAS.forEach(function (cat) { %>
+        <option value="<%= cat %>" <%= (postagem.item && postagem.item.categoria === cat) ? 'selected' : '' %>><%= cat %></option>
+      <% }) %>
+    </select>
+
+    <input name="cor" aria-label="Cor do item" placeholder="Cor" value="<%= postagem.item ? (postagem.item.cor || '') : '' %>">
+  </fieldset>
+
+  <fieldset style="border: 1px solid #ccc; padding: .75rem; border-radius: 6px; margin-bottom: .75rem;">
+    <legend><strong>Dados da Postagem</strong></legend>
+
+    <select name="status" aria-label="Status">
+      <% STATUS.forEach(function (s) { %>
+        <option value="<%= s %>" <%= postagem.status === s ? 'selected' : '' %>><%= s %></option>
+      <% }) %>
+    </select>
+
+    <input name="local" aria-label="Local" placeholder="Local" value="<%= postagem.local || '' %>">
+
+    <label for="data_encontrado">Data que foi encontrado:</label>
+    <input type="date" id="data_encontrado" name="data_encontrado" value="<%= dataEncontradaFormatada %>">
+
+    <div style="margin-top: .5rem;">
+      <textarea name="descricao" rows="3" style="width: 100%;" placeholder="Descrição da postagem..."><%= postagem.descricao || '' %></textarea>
+    </div>
+  </fieldset>
+
+  <button type="submit">Salvar Alterações</button>
+</form>
+
+<p><a href="/">Cancelar</a></p>
