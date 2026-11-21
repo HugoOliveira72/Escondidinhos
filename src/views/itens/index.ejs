@@ -1,19 +1,23 @@
-<h2>Cadastro de Itens</h2>
+<% const ehAdmin = typeof usuarioLogado !== 'undefined' && usuarioLogado && usuarioLogado.tipo === 1; %>
 
-<% erros.forEach(function (e) { %><p class="erro" role="alert"><%= e %></p><% }) %>
+<% if (ehAdmin) { %>
+  <h2>Cadastro de Itens</h2>
 
-<form method="post" action="/">
-  <input name="nome" aria-label="Nome do item" placeholder="Nome do item" value="<%= form.nome || '' %>" required>
-  <input name="descricao" aria-label="Descrição" placeholder="Descrição" value="<%= form.descricao || '' %>">
-  <input name="local" aria-label="Local" placeholder="Local onde foi perdido/encontrado" value="<%= form.local || '' %>">
-  <input name="imagemUrl" aria-label="URL da imagem" placeholder="URL da imagem" value="<%= form.imagemUrl || '' %>">
-  <select name="status" aria-label="Status">
-    <% STATUS.forEach(function (s) { %>
-      <option value="<%= s %>" <%= (form.status || 'perdido') === s ? 'selected' : '' %>><%= s %></option>
-    <% }) %>
-  </select>
-  <button type="submit">Cadastrar</button>
-</form>
+  <% erros.forEach(function (e) { %><p class="erro" role="alert"><%= e %></p><% }) %>
+
+  <form method="post" action="/">
+    <input name="nome" aria-label="Nome do item" placeholder="Nome do item" value="<%= form.nome || '' %>" required>
+    <input name="descricao" aria-label="Descrição" placeholder="Descrição" value="<%= form.descricao || '' %>">
+    <input name="local" aria-label="Local" placeholder="Local onde foi perdido/encontrado" value="<%= form.local || '' %>">
+    <input name="imagemUrl" aria-label="URL da imagem" placeholder="URL da imagem" value="<%= form.imagemUrl || '' %>">
+    <select name="status" aria-label="Status">
+      <% STATUS.forEach(function (s) { %>
+        <option value="<%= s %>" <%= (form.status || 'perdido') === s ? 'selected' : '' %>><%= s %></option>
+      <% }) %>
+    </select>
+    <button type="submit">Cadastrar</button>
+  </form>
+<% } %>
 
 <h2>Itens Cadastrados</h2>
 
@@ -26,17 +30,14 @@
         <strong><%= i.id %></strong> — <%= i.nome %> — <%= i.status %> — <%= i.local || 'local não informado' %>
         <% if (i.descricao) { %><br><small><%= i.descricao %></small><% } %>
 
-        <% if (typeof usuarioLogado !== 'undefined' && usuarioLogado && usuarioLogado.tipo === 1) { %>
-        <% if (typeof usuarioLogado !== 'undefined' && usuarioLogado && usuarioLogado.tipo === 1) { %>
-          <!-- UPDATE: visível apenas para administrador -->
+        <% if (ehAdmin) { %>
+          <!-- Ações restritas ao administrador -->
           <a href="/editar/<%= i.id %>">Editar</a>
 
-          <!-- DELETE: visível apenas para administrador -->
           <form method="post" action="/deletar/<%= i.id %>" onsubmit="return confirm('Excluir este item?')">
             <button type="submit">Excluir</button>
           </form>
-<% } %>
-<% } %>
+        <% } %>
       </li>
     <% }) %>
   </ul>

@@ -4,11 +4,11 @@ const { flash } = require('../extensions/flash');
 
 const itemRouter = express.Router();
 
-// Tipo de usuário administrador (ajuste para 'admin' se o seu login salvar string)
+// Tipo de usuário administrador (ajuste para 'admin' caso o login salve string)
 const TIPO_ADMIN = 1;
 
 /**
- * Garante que o usuário esteja autenticado antes de acessar rotas de itens.
+ * Middleware que garante que o usuário esteja autenticado na sessão.
  */
 function exigirLogin(req, res, next) {
   if (!req.session || !req.session.usuario) {
@@ -18,6 +18,10 @@ function exigirLogin(req, res, next) {
   return next();
 }
 
+/**
+ * Middleware que restringe a ação apenas a usuários administradores.
+ * Em caso de usuário padrão sem permissão, registra mensagem de erro e redireciona para '/'.
+ */
 function exigirAdmin(req, res, next) {
   if (!req.session || !req.session.usuario) {
     flash(req, 'Acesso não autorizado. Faça login para continuar.', 'erro');
@@ -25,7 +29,7 @@ function exigirAdmin(req, res, next) {
   }
 
   if (req.session.usuario.tipo !== TIPO_ADMIN) {
-    flash(req, 'Acesso não autorizado. Você não tem permissão para acessar esta página.', 'erro');
+    flash(req, 'Você não possui permissão para cadastrar, editar ou excluir itens.', 'erro');
     return res.redirect('/');
   }
 
@@ -46,10 +50,12 @@ const dadosDoForm = (b = {}) => ({
   status: b.status || 'perdido',
 });
 
-// Aplica exigência de login para todas as rotas deste router
+// Exige login para qualquer rota deste router
 itemRouter.use(exigirLogin);
 
-// Rota principal: listar itens (GET) e cadastrar item (POST)
+// Rota principal:
+// - GET /: qualquer usuário logado pode visualizar os itens
+// - POST /: apenas administrador pode criar novos itens
 itemRouter
   .route('/')
   .get(async (req, res) => {
@@ -61,7 +67,7 @@ itemRouter
       erros: [],
     });
   })
-  .post(async (req, res) => {
+  .post(exigirAdmin, async (req, res) => {
     try {
       const dados = dadosDoForm(req.body);
       if (!dados.nome) {
@@ -121,7 +127,7 @@ itemRouter.post('/deletar/:id', exigirAdmin, async (req, res) => {
     await ItemDAO.deletar(req.params.id);
     flash(req, 'Item excluído com sucesso!');
   } catch (erro) {
-    flash(req, 'Erro ao excluir o item.');
+    flash(req, 'Erro ao excluir o item.', 'erro');
   }
   return res.redirect('/');
 });
