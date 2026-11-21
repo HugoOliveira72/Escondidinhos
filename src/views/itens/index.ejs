@@ -26,13 +26,17 @@
         <strong><%= i.id %></strong> — <%= i.nome %> — <%= i.status %> — <%= i.local || 'local não informado' %>
         <% if (i.descricao) { %><br><small><%= i.descricao %></small><% } %>
 
-        <!-- UPDATE: o id vai na URL (url_for('evento.editar', id=e.id) no Flask) -->
-        <a href="/editar/<%= i.id %>">Editar</a>
+        <% if (typeof usuarioLogado !== 'undefined' && usuarioLogado && usuarioLogado.tipo === 1) { %>
+        <% if (typeof usuarioLogado !== 'undefined' && usuarioLogado && usuarioLogado.tipo === 1) { %>
+          <!-- UPDATE: visível apenas para administrador -->
+          <a href="/editar/<%= i.id %>">Editar</a>
 
-        <!-- DELETE: sem link, precisa ser um formulário POST -->
-        <form method="post" action="/deletar/<%= i.id %>" onsubmit="return confirm('Excluir este item?')">
-          <button type="submit">Excluir</button>
-        </form>
+          <!-- DELETE: visível apenas para administrador -->
+          <form method="post" action="/deletar/<%= i.id %>" onsubmit="return confirm('Excluir este item?')">
+            <button type="submit">Excluir</button>
+          </form>
+<% } %>
+<% } %>
       </li>
     <% }) %>
   </ul>
