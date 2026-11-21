@@ -96,6 +96,15 @@
         </div>
       <% } %>
 
+      <button
+        type="button"
+        class="btn-ver-detalhes"
+        aria-label="Ver detalhes da postagem #<%= p.id_postagem %>"
+        data-postagem-id="<%= p.id_postagem %>"
+      >
+        👁️ Detalhes
+      </button>
+
       <% if (ehAdmin) { %>
         <footer class="post-rodape">
           <a href="/editar/<%= p.id_postagem %>">Editar</a>
@@ -120,6 +129,111 @@
       div.style.marginTop = '.3rem';
       div.innerHTML = '<input type="url" name="imagens[]" placeholder="https://exemplo.com/outra-foto.jpg" style="width: 80%;"> <button type="button" onclick="this.parentElement.remove()">Remover</button>';
       container.appendChild(div);
+    });
+  }
+</script>
+
+
+<dialog id="modal-detalhes-postagem">
+  <div id="conteudo-detalhes-postagem"></div>
+  <button type="button" id="btn-fechar-detalhes">Fechar</button>
+</dialog>
+
+<%
+  const postagensSerializadas = postagens.map((p) => ({
+    id_postagem: p.id_postagem,
+    status: p.status,
+    local: p.local || 'Não informado',
+    descricao: p.descricao || 'Sem descrição.',
+    data_publicacao: p.data_publicacao ? new Date(p.data_publicacao).toLocaleString('pt-BR') : '-',
+    data_encontrado: p.data_encontrado ? new Date(p.data_encontrado).toLocaleDateString('pt-BR') : 'Não informada',
+    item: p.item ? {
+      nome: p.item.nome,
+      categoria: p.item.categoria,
+      cor: p.item.cor || 'Não informada',
+      imagens: Array.isArray(p.item.imagens) ? p.item.imagens.map((img) => img.url) : []
+    } : null
+  }));
+%>
+
+<script>
+  const DADOS_POSTAGENS = <%- JSON.stringify(postagensSerializadas) %>;
+  const dialogDetalhes = document.getElementById('modal-detalhes-postagem');
+  const conteudoDetalhes = document.getElementById('conteudo-detalhes-postagem');
+  const btnFecharDetalhes = document.getElementById('btn-fechar-detalhes');
+
+  function escaparHtml(texto) {
+    return String(texto ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function renderizarDetalhes(p) {
+    const item = p.item || {};
+    const imagens = Array.isArray(item.imagens) ? item.imagens : [];
+
+    const htmlImagens = imagens.length > 0
+      ? `<div>
+           <p><strong>Fotos do item:</strong></p>
+           <div>
+             ${imagens.map((url, idx) => `
+               <a href="${escaparHtml(url)}" target="_blank" rel="noopener">
+                 <img src="${escaparHtml(url)}" alt="Foto ${idx + 1} de ${escaparHtml(item.nome || 'item')}" width="150">
+               </a>
+             `).join('')}
+           </div>
+         </div>`
+      : '<p><strong>Fotos do item:</strong> Nenhuma foto anexada.</p>';
+
+    conteudoDetalhes.innerHTML = `
+      <h3>Detalhes da Postagem #${escaparHtml(p.id_postagem)}</h3>
+
+      <fieldset>
+        <legend><strong>Dados do Item</strong></legend>
+        <p><strong>Nome:</strong> ${escaparHtml(item.nome || '-')}</p>
+        <p><strong>Categoria:</strong> ${escaparHtml(item.categoria || '-')}</p>
+        <p><strong>Cor:</strong> ${escaparHtml(item.cor)}</p>
+        ${htmlImagens}
+      </fieldset>
+
+      <fieldset>
+        <legend><strong>Dados da Postagem</strong></legend>
+        <p><strong>Status:</strong> ${escaparHtml(p.status)}</p>
+        <p><strong>Local:</strong> ${escaparHtml(p.local)}</p>
+        <p><strong>Data da publicação:</strong> ${escaparHtml(p.data_publicacao)}</p>
+        <p><strong>Data que foi encontrado:</strong> ${escaparHtml(p.data_encontrado)}</p>
+        <p><strong>Descrição:</strong> ${escaparHtml(p.descricao)}</p>
+      </fieldset>
+    `;
+  }
+
+  if (dialogDetalhes && conteudoDetalhes && btnFecharDetalhes) {
+    document.querySelectorAll('.btn-ver-detalhes').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = Number(btn.getAttribute('data-postagem-id'));
+        const postagem = DADOS_POSTAGENS.find((item) => item.id_postagem === id);
+        if (!postagem) return;
+
+        renderizarDetalhes(postagem);
+        if (typeof dialogDetalhes.showModal === 'function') {
+          dialogDetalhes.showModal();
+        } else {
+          dialogDetalhes.setAttribute('open', '');
+        }
+      });
+    });
+
+    btnFecharDetalhes.addEventListener('click', () => {
+      dialogDetalhes.close();
+    });
+
+    dialogDetalhes.addEventListener('click', (evento) => {
+      if (evento.target === dialogDetalhes) {
+        dialogDetalhes.close();
+      }
     });
   }
 </script>
