@@ -7,16 +7,37 @@ generator client {
 }
 
 model Item {
-  id          Int      @id @default(autoincrement())
-  nome        String
-  descricao   String?
-  local       String?
-  imagemUrl   String?
-  status      String   @default("perdido")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id_item   Int          @id @default(autoincrement())
+  nome      String
+  categoria String
+  cor       String?
+  imagens   ItemImagem[]
+  postagem  Postagem?
 
   @@map("itens")
+}
+
+model ItemImagem {
+  id_imagem Int    @id @default(autoincrement())
+  url       String
+  ordem     Int    @default(0)
+  id_item   Int
+  item      Item   @relation(fields: [id_item], references: [id_item], onDelete: Cascade)
+
+  @@map("ItemImagem")
+}
+
+model Postagem {
+  id_postagem     Int       @id @default(autoincrement())
+  id_item         Int       @unique
+  item            Item      @relation(fields: [id_item], references: [id_item], onDelete: Cascade)
+  status          String    @default("perdido")
+  descricao       String?
+  data_publicacao DateTime  @default(now())
+  data_encontrado DateTime?
+  local           String?
+
+  @@map("Postagem")
 }
 
 model User {
