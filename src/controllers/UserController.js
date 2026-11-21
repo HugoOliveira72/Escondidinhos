@@ -153,6 +153,89 @@ class UserController {
       res.redirect('/usuarios/login');
     });
   }
+  /**
+     * Exibe os dados do perfil do usuário logado.
+     */
+  async perfil(req, res) {
+    try {
+      const usuario = await UserDAO.buscarPorId(req.session.usuario.id);
+      if (!usuario) {
+        return req.session.destroy(() => res.redirect('/usuarios/login'));
+      }
+      res.render('usuarios/perfil', { usuario });
+    } catch (error) {
+      console.error("Erro ao carregar perfil:", error);
+      res.status(500).send("Erro ao carregar o perfil.");
+    }
+  }
+
+  /**
+   * Exibe o formulário de edição do próprio perfil.
+   */
+  async formEditarPerfil(req, res) {
+    try {
+      const usuario = await UserDAO.buscarPorId(req.session.usuario.id);
+      if (!usuario) {
+        return req.session.destroy(() => res.redirect('/usuarios/login'));
+      }
+      res.render('usuarios/editar-perfil', { usuario });
+    } catch (error) {
+      console.error("Erro ao carregar edição do perfil:", error);
+      res.status(500).send("Erro ao carregar formulário de edição.");
+    }
+  }
+
+  /**
+   * Salva as alterações do próprio perfil (mantém tipoUser intacto por segurança).
+   */
+  async atualizarPerfil(req, res) {
+    try {
+      const id = req.session.usuario.id;
+      const { nome, contato, senha } = req.body;
+
+      if (!nome || !nome.trim()) {
+        return res.status(400).send("Nome é obrigatório.");
+      }
+
+      const dadosAtualizados = {
+        nome: nome.trim(),
+        contato: contato || null,
+      };
+
+      if (senha && senha.trim() !== "") {
+        dadosAtualizados.senha = await bcrypt.hash(senha, 10);
+      }
+
+      const usuarioAtualizado = await UserDAO.atualizar(id, dadosAtualizados);
+
+      req.session.usuario = {
+        id: usuarioAtualizado.idUser,
+        nome: usuarioAtualizado.nome,
+        tipo: usuarioAtualizado.tipoUser,
+      };
+
+      res.redirect('/usuarios/perfil');
+    } catch (error) {
+      console.error("Erro ao atualizar perfil:", error);
+      res.status(500).send("Erro ao atualizar o perfil.");
+    }
+  }
+
+  /**
+   * Exclui a conta do usuário logado e encerra a sessão.
+   */
+  async excluirPerfil(req, res) {
+    try {
+      const id = req.session.usuario.id;
+      await UserDAO.excluir(id);
+      req.session.destroy(() => {
+        res.redirect('/usuarios/login');
+      });
+    } catch (error) {
+      console.error("Erro ao excluir conta:", error);
+      res.status(500).send("Erro ao excluir a conta.");
+    }
+  }
 }
 
 module.exports = new UserController();

@@ -1,0 +1,15 @@
+<h2>Meu Perfil</h2>
+
+<p><strong>Nome:</strong> <%= usuario.nome %></p>
+<p><strong>Contato:</strong> <%= usuario.contato || 'Não informado' %></p>
+<p><strong>Tipo de Usuário:</strong> <%= usuario.tipoUser === 1 ? 'Administrador' : 'Usuário Comum' %></p>
+
+<div>
+  <a href="/usuarios/perfil/editar">Editar Perfil</a>
+
+  <form method="post" action="/usuarios/perfil/excluir" onsubmit="return confirm('Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.')" style="display:inline;">
+    <button type="submit">Excluir Conta</button>
+  </form>
+</div>
+
+<p><a href="/">Voltar</a></p>

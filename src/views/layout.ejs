@@ -16,11 +16,14 @@
     <nav>
       <a href="/">Postagens</a>
       <% if (usuarioLogado) { %>
-        <span>Logado como: <strong>
-            <%= usuarioLogado.nome %>
-          </strong></span>
-        <a href="/usuarios/logout">Sair</a>
-        <% } %>
+        <details id="menu-perfil-collapsible">
+          <summary>👤 <%= usuarioLogado.nome %></summary>
+          <div>
+            <p><a href="/usuarios/perfil">Ver perfil</a></p>
+            <p><a href="/usuarios/logout">Sair</a></p>
+          </div>
+        </details>
+      <% } %>
     </nav>
     </nav>
   </header>

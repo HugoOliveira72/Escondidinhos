@@ -1,0 +1,22 @@
+<h2>Editar Meu Perfil</h2>
+
+<form method="post" action="/usuarios/perfil/editar">
+  <div>
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome" value="<%= usuario.nome %>" required>
+  </div>
+
+  <div>
+    <label for="contato">Contato:</label>
+    <input type="text" id="contato" name="contato" value="<%= usuario.contato || '' %>">
+  </div>
+
+  <div>
+    <label for="senha">Nova Senha (deixe em branco para manter):</label>
+    <input type="password" id="senha" name="senha">
+  </div>
+
+  <button type="submit">Salvar Alterações</button>
+</form>
+
+<p><a href="/usuarios/perfil">Cancelar</a></p>
