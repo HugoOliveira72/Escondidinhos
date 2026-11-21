@@ -20,16 +20,24 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // Configuração de Sessão
-app.use(session({ 
-  secret: 'dw2-chave-de-aula', 
-  resave: false, 
-  saveUninitialized: false 
+app.use(session({
+  secret: 'dw2-chave-de-aula',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false }
 }));
+
 app.use(carregarMensagens);
 
+// Disponibiliza o usuário logado para todas as views EJS
+app.use((req, res, next) => {
+  res.locals.usuarioLogado = req.session ? req.session.usuario || null : null;
+  next();
+});
+
 // Registro das Rotas do Sistema
-app.use(itemRouter);
 app.use('/usuarios', userRoutes); // Prefixo /usuarios para autenticação e gestão
+app.use(itemRouter);
 
 module.exports = app;
 

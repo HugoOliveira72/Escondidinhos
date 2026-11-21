@@ -4,6 +4,39 @@ const { flash } = require('../extensions/flash');
 
 const itemRouter = express.Router();
 
+// Tipo de usuário administrador (ajuste para 'admin' se o seu login salvar string)
+const TIPO_ADMIN = 1;
+
+/**
+ * Garante que o usuário esteja autenticado antes de acessar rotas de itens.
+ */
+function exigirLogin(req, res, next) {
+  if (!req.session || !req.session.usuario) {
+    flash(req, 'Acesso não autorizado. Faça login para continuar.');
+    return res.redirect('/usuarios/login');
+  }
+  return next();
+}
+
+/**
+ * Garante que o usuário autenticado seja administrador.
+ * Deve ser usado após exigirLogin.
+ */
+function exigirAdmin(req, res, next) {
+  if (!req.session || !req.session.usuario) {
+    flash(req, 'Acesso não autorizado. Faça login para continuar.');
+    return res.redirect('/usuarios/login');
+  }
+
+  if (req.session.usuario.tipo !== TIPO_ADMIN) {
+    flash(req, 'Acesso não autorizado. Você não tem permissão para acessar esta página.');
+    return res.redirect('/');
+  }
+
+  return next();
+}
+
+// Valida se o parâmetro :id é numérico antes de prosseguir para a rota
 itemRouter.param('id', (req, res, next, id) => {
   if (!/^\d+$/.test(id)) return res.status(404).send('Item não encontrado.');
   next();
@@ -17,6 +50,10 @@ const dadosDoForm = (b = {}) => ({
   status: b.status || 'perdido',
 });
 
+// Aplica exigência de login para todas as rotas deste router
+itemRouter.use(exigirLogin);
+
+// Rota principal: listar itens (GET) e cadastrar item (POST)
 itemRouter
   .route('/')
   .get(async (req, res) => {
@@ -48,8 +85,10 @@ itemRouter
     }
   });
 
+// Rota de edição: restrita a administradores
 itemRouter
   .route('/editar/:id')
+  .all(exigirAdmin)
   .get(async (req, res) => {
     const item = await ItemDAO.buscarPorId(req.params.id);
     if (!item) return res.status(404).send('Item não encontrado.');
@@ -80,7 +119,8 @@ itemRouter
     }
   });
 
-itemRouter.post('/deletar/:id', async (req, res) => {
+// Rota de exclusão: restrita a administradores
+itemRouter.post('/deletar/:id', exigirAdmin, async (req, res) => {
   try {
     await ItemDAO.deletar(req.params.id);
     flash(req, 'Item excluído com sucesso!');
