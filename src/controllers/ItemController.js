@@ -12,24 +12,20 @@ const TIPO_ADMIN = 1;
  */
 function exigirLogin(req, res, next) {
   if (!req.session || !req.session.usuario) {
-    flash(req, 'Acesso não autorizado. Faça login para continuar.');
+    flash(req, 'Acesso não autorizado. Faça login para continuar.', 'erro');
     return res.redirect('/usuarios/login');
   }
   return next();
 }
 
-/**
- * Garante que o usuário autenticado seja administrador.
- * Deve ser usado após exigirLogin.
- */
 function exigirAdmin(req, res, next) {
   if (!req.session || !req.session.usuario) {
-    flash(req, 'Acesso não autorizado. Faça login para continuar.');
+    flash(req, 'Acesso não autorizado. Faça login para continuar.', 'erro');
     return res.redirect('/usuarios/login');
   }
 
   if (req.session.usuario.tipo !== TIPO_ADMIN) {
-    flash(req, 'Acesso não autorizado. Você não tem permissão para acessar esta página.');
+    flash(req, 'Acesso não autorizado. Você não tem permissão para acessar esta página.', 'erro');
     return res.redirect('/');
   }
 
