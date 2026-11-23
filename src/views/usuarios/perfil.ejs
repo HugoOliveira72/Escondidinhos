@@ -1,15 +1,31 @@
-<h2>Meu Perfil</h2>
-
-<p><strong>Nome:</strong> <%= usuario.nome %></p>
-<p><strong>Contato:</strong> <%= usuario.contato || 'Não informado' %></p>
-<p><strong>Tipo de Usuário:</strong> <%= usuario.tipoUser === 1 ? 'Administrador' : 'Usuário Comum' %></p>
-
-<div>
-  <a href="/usuarios/perfil/editar">Editar Perfil</a>
-
-  <form method="post" action="/usuarios/perfil/excluir" onsubmit="return confirm('Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.')" style="display:inline;">
-    <button type="submit">Excluir Conta</button>
-  </form>
+<div class="page-header-bar">
+  <h2 class="page-title">Meu Perfil</h2>
+  <a href="/" class="btn btn-outline btn-sm">↩ Voltar ao Feed</a>
 </div>
 
-<p><a href="/">Voltar</a></p>
+<div class="profile-banner-card">
+  <div class="profile-avatar">👤</div>
+
+  <div class="profile-info">
+    <h2>
+      <%= usuario.nome %>
+      <span class="badge-role <%= usuario.tipoUser === 1 ? '' : 'comum' %>">
+        <%= usuario.tipoUser === 1 ? 'Administrador' : 'Usuário Comum' %>
+      </span>
+    </h2>
+    <p class="page-subtitle" style="margin-top: 6px;">
+      <strong>Contato / E-mail:</strong> <%= usuario.contato || 'Não informado' %>
+    </p>
+    <p class="page-subtitle">
+      <strong>Membro desde:</strong> <%= usuario.createdAt ? new Date(usuario.createdAt).toLocaleDateString('pt-BR') : '2026' %>
+    </p>
+  </div>
+
+  <div class="profile-actions">
+    <a href="/usuarios/perfil/editar" class="btn btn-red">Editar Perfil</a>
+
+    <form method="post" action="/usuarios/perfil/excluir" onsubmit="return confirm('Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.')" style="display:inline;">
+      <button type="submit" class="btn btn-black">Excluir Conta</button>
+    </form>
+  </div>
+</div>

@@ -1,35 +1,48 @@
-<h2>Gerenciamento de Usuários</h2>
-
-<p><a href="/usuarios/cadastrar">Novo Cadastro</a> | <a href="/">Voltar ao Feed</a></p>
+<!-- src/views/usuarios/index.ejs -->
+<div class="page-header-bar">
+  <h2 class="page-title">Gerenciamento de Usuários</h2>
+  <div style="display: flex; gap: 10px;">
+    <a href="/usuarios/cadastrar" class="btn btn-red btn-sm">+ Novo Usuário</a>
+    <a href="/" class="btn btn-outline btn-sm">↩ Voltar ao Feed</a>
+  </div>
+</div>
 
 <% if (usuarios && usuarios.length > 0) { %>
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nome</th>
-        <th>Contato</th>
-        <th>Tipo</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% usuarios.forEach(function(u) { %>
+  <div class="table-wrapper">
+    <table>
+      <thead>
         <tr>
-          <td><%= u.idUser %></td>
-          <td><%= u.nome %></td>
-          <td><%= u.contato || '-' %></td>
-          <td><%= u.tipoUser === 1 ? 'Administrador' : 'Comum' %></td>
-          <td>
-            <a href="/usuarios/editar/<%= u.idUser %>">Editar</a>
-            <form method="post" action="/usuarios/excluir/<%= u.idUser %>" style="display:inline;" onsubmit="return confirm('Deseja excluir este usuário?')">
-              <button type="submit">Excluir</button>
-            </form>
-          </td>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Contato</th>
+          <th>Tipo</th>
+          <th>Ações</th>
         </tr>
-      <% }) %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% usuarios.forEach(function(u) { %>
+          <tr>
+            <td>#<%= u.idUser %></td>
+            <td><strong><%= u.nome %></strong></td>
+            <td><%= u.contato || '-' %></td>
+            <td>
+              <span class="badge-role <%= u.tipoUser === 1 ? '' : 'comum' %>">
+                <%= u.tipoUser === 1 ? 'Administrador' : 'Comum' %>
+              </span>
+            </td>
+            <td style="display: flex; gap: 8px;">
+              <a href="/usuarios/editar/<%= u.idUser %>" class="btn btn-outline btn-sm">Editar</a>
+              <form method="post" action="/usuarios/excluir/<%= u.idUser %>" style="display:inline;" onsubmit="return confirm('Deseja excluir este usuário?')">
+                <button type="submit" class="btn btn-red btn-sm">Excluir</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
 <% } else { %>
-  <p>Nenhum usuário cadastrado.</p>
+  <div class="surface-card">
+    <p class="page-subtitle">Nenhum usuário cadastrado.</p>
+  </div>
 <% } %>

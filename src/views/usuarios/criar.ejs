@@ -1,17 +1,61 @@
-<h2>Cadastro de Novo Usuário</h2>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadê? - Criar Conta</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="auth-body">
+  <header class="wave-header">
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,0 L1440,0 L1440,75 C1050,115 390,75 0,105 Z" fill="#b0b0b0"></path>
+      <path d="M0,0 L1440,0 L1440,70 C1050,110 390,70 0,100 Z" fill="#c00d0d"></path>
+    </svg>
+  </header>
 
-<form method="post" action="/usuarios/cadastrar">
-  <input type="text" name="nome" placeholder="Nome Completo" required>
-  <input type="text" name="contato" placeholder="E-mail ou Contato">
-  <input type="password" name="senha" placeholder="Senha" required>
-  
-  <label for="tipoUser">Tipo de Usuário:</label>
-  <select name="tipoUser" id="tipoUser">
-    <option value="0">Usuário Comum</option>
-    <option value="1">Administrador (Secretaria)</option>
-  </select>
+  <main class="auth-main">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <img src="/img/Logo.png" alt="Cadê?">
+      </div>
+      <h1 class="auth-title">Cadastre-se já</h1>
 
-  <button type="submit">Cadastrar</button>
-</form>
+      <form method="post" action="/usuarios/cadastrar" class="auth-form">
+        <div class="form-group">
+          <label for="nome">Nome Completo</label>
+          <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
+        </div>
 
-<p><a href="/usuarios/login">Já possui conta? Faça login</a> | <a href="/">Voltar ao Feed</a></p>s
+        <div class="form-group">
+          <label for="contato">E-mail ou Contato</label>
+          <input type="text" id="contato" name="contato" placeholder="seuemail@exemplo.com" required>
+        </div>
+
+        <div class="form-group">
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" name="senha" placeholder="Crie uma senha" required>
+        </div>
+
+        <div class="form-group">
+          <label for="tipoUser">Tipo de Usuário</label>
+          <select name="tipoUser" id="tipoUser">
+            <option value="0">Usuário Comum</option>
+            <option value="1">Administrador (Secretaria)</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-red btn-full">Criar Conta</button>
+
+        <div class="auth-links" style="justify-content: center;">
+          <a href="/usuarios/login">Já possuo uma conta</a>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <p>© Projeto Interdisciplinar DSM 2026 - FATEC Porto Ferreira</p>
+  </footer>
+</body>
+</html>

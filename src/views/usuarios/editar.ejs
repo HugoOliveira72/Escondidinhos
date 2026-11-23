@@ -1,17 +1,37 @@
-<h2>Editar Usuário</h2>
+<!-- src/views/usuarios/editar.ejs -->
+<div class="page-header-bar">
+  <h2 class="page-title">Editar Usuário #<%= usuario.idUser %></h2>
+  <a href="/usuarios" class="btn btn-outline btn-sm">↩ Voltar</a>
+</div>
 
-<form method="post" action="/usuarios/editar/<%= usuario.idUser %>">
-  <input type="text" name="nome" value="<%= usuario.nome %>" placeholder="Nome Completo" required>
-  <input type="text" name="contato" value="<%= usuario.contato || '' %>" placeholder="E-mail ou Contato">
-  <input type="password" name="senha" placeholder="Nova Senha (deixe em branco para manter)">
-  
-  <label for="tipoUser">Tipo de Usuário:</label>
-  <select name="tipoUser" id="tipoUser">
-    <option value="0" <%= usuario.tipoUser === 0 ? 'selected' : '' %>>Usuário Comum</option>
-    <option value="1" <%= usuario.tipoUser === 1 ? 'selected' : '' %>>Administrador (Secretaria)</option>
-  </select>
+<section class="surface-card" style="max-width: 600px;">
+  <form method="post" action="/usuarios/editar/<%= usuario.idUser %>" class="auth-form">
+    <div class="form-group">
+      <label for="nome">Nome Completo</label>
+      <input type="text" id="nome" name="nome" value="<%= usuario.nome %>" required>
+    </div>
 
-  <button type="submit">Salvar Alterações</button>
-</form>
+    <div class="form-group">
+      <label for="contato">E-mail ou Contato</label>
+      <input type="text" id="contato" name="contato" value="<%= usuario.contato || '' %>">
+    </div>
 
-<p><a href="/usuarios">Cancelar</a></p>
+    <div class="form-group">
+      <label for="senha">Nova Senha (deixe em branco para manter)</label>
+      <input type="password" id="senha" name="senha" placeholder="••••••••">
+    </div>
+
+    <div class="form-group">
+      <label for="tipoUser">Tipo de Usuário</label>
+      <select name="tipoUser" id="tipoUser">
+        <option value="0" <%= usuario.tipoUser === 0 ? 'selected' : '' %>>Usuário Comum</option>
+        <option value="1" <%= usuario.tipoUser === 1 ? 'selected' : '' %>>Administrador (Secretaria)</option>
+      </select>
+    </div>
+
+    <div style="display: flex; gap: 10px; margin-top: 8px;">
+      <button type="submit" class="btn btn-black">Salvar Alterações</button>
+      <a href="/usuarios" class="btn btn-outline">Cancelar</a>
+    </div>
+  </form>
+</section>

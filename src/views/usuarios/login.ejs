@@ -1,14 +1,55 @@
-<h2>Login no Sistema</h2>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadê? - Entrar</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="auth-body">
+  <header class="wave-header">
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,0 L1440,0 L1440,75 C1050,115 390,75 0,105 Z" fill="#b0b0b0"></path>
+      <path d="M0,0 L1440,0 L1440,70 C1050,110 390,70 0,100 Z" fill="#c00d0d"></path>
+    </svg>
+  </header>
 
-<% if (typeof erro !== 'undefined' && erro) { %>
-  <p class="erro" role="alert"><%= erro %></p>
-<% } %>
+  <main class="auth-main">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <img src="/img/Logo.png" alt="Cadê?">
+      </div>
+      <h1 class="auth-title">Entrar</h1>
 
-<form method="post" action="/usuarios/login">
-  <input type="text" name="contato" placeholder="E-mail ou Contato" required>
-  <input type="password" name="senha" placeholder="Senha" required>
-  <button type="submit">Entrar</button>
-</form>
+      <% if (typeof erro !== 'undefined' && erro) { %>
+        <p class="erro" role="alert"><%= erro %></p>
+      <% } %>
+      <% mensagens.forEach(function (m) { %>
+        <p class="<%= m.tipo || 'aviso' %>"><%= m.texto || m %></p>
+      <% }) %>
 
-<p>Não tem uma conta? <a href="/usuarios/cadastrar">Cadastre-se aqui</a></p>
-<p><a href="/">Voltar para o Feed</a></p>
+      <form method="post" action="/usuarios/login" class="auth-form">
+        <div class="form-group">
+          <label for="contato">E-mail ou Contato</label>
+          <input type="text" id="contato" name="contato" placeholder="Digite seu e-mail ou contato" required>
+        </div>
+
+        <div class="form-group">
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+        </div>
+
+        <button type="submit" class="btn btn-red btn-full">Login</button>
+
+        <div class="auth-links">
+          <a href="/usuarios/cadastrar">Não tenho cadastro</a>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <p>© Projeto Interdisciplinar DSM 2026 - FATEC Porto Ferreira</p>
+  </footer>
+</body>
+</html>
