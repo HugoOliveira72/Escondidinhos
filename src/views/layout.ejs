@@ -4,42 +4,55 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>
-    <%= typeof title !=='undefined' ? title : 'Cadê?' %>
-  </title>
+  <title><%= typeof title !== 'undefined' ? title : 'Cadê? - Achados e Perdidos' %></title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
-  <header>
-    <h1>Cadê? <small>Achados e Perdidos</small></h1>
-    <nav>
-      <a href="/">Postagens</a>
+  <header class="app-header">
+    <a href="/" class="logo-area" title="Ir para Postagens">
+      <img src="/img/Logo.png" alt="Cadê? Achados e Perdidos">
+    </a>
+
+    <div class="search-bar">
+      <input type="text" id="filtro-pesquisa-global" placeholder="Procure aqui seu item por nome, categoria ou local...">
+    </div>
+
+    <div class="header-actions">
+      <nav class="header-nav-links">
+        <a href="/">Postagens</a>
+        <% if (usuarioLogado && usuarioLogado.tipo === 1) { %>
+          <a href="/usuarios">Usuários</a>
+        <% } %>
+      </nav>
+
       <% if (usuarioLogado) { %>
         <details id="menu-perfil-collapsible">
-          <summary>👤 <%= usuarioLogado.nome %></summary>
-          <div>
-            <p><a href="/usuarios/perfil">Ver perfil</a></p>
-            <p><a href="/usuarios/logout">Sair</a></p>
+          <summary>
+            <img src="/img/login.png" alt="Perfil">
+            <span><%= usuarioLogado.nome %></span>
+          </summary>
+          <div class="perfil-dropdown">
+            <a href="/usuarios/perfil">👤 Ver perfil</a>
+            <a href="/usuarios/logout">🚪 Sair</a>
           </div>
         </details>
       <% } %>
-    </nav>
-    </nav>
+    </div>
   </header>
 
-  <main>
+  <main class="main-container">
     <% mensagens.forEach(function (m) { %>
       <p class="<%= m.tipo || 'aviso' %>" role="<%= m.tipo === 'erro' ? 'alert' : 'status' %>">
         <%= m.texto || m %>
       </p>
-      <% }) %>
+    <% }) %>
 
-        <%- body %>
+    <%- body %>
   </main>
 
-  <footer>
-    <p>© Projeto Interdisciplinar DSM 2026 - FATEC Porto Ferreira.</p>
+  <footer class="app-footer">
+    <p>© Projeto Interdisciplinar DSM 2026 - FATEC Porto Ferreira • Sistema Cadê?</p>
   </footer>
 </body>
 
