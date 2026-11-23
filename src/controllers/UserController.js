@@ -236,6 +236,13 @@ class UserController {
       res.status(500).send("Erro ao excluir a conta.");
     }
   }
+  formCriar(req, res) {
+    res.render('usuarios/criar', { layout: false, title: 'Cadê? - Criar Conta' });
+  }
+  
+  formLogin(req, res) {
+    res.render('usuarios/login', { layout: false, erro: null, title: 'Cadê? - Entrar' });
+  }
 }
 
 module.exports = new UserController();
