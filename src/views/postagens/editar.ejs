@@ -1,64 +1,95 @@
-<h2>Editar Postagem #<%= postagem.id_postagem %></h2>
+<div class="page-header-bar">
+  <h2 class="page-title">Editar Postagem #<%= postagem.id_postagem %></h2>
+  <a href="/" class="btn btn-outline btn-sm">↩ Voltar ao Feed</a>
+</div>
 
-<% erros.forEach(function (e) { %><p class="erro" role="alert"><%= e %></p><% }) %>
+<section class="surface-card">
+  <% erros.forEach(function (e) { %><p class="erro" role="alert"><%= e %></p><% }) %>
 
-<%
-  const dataEncontradaFormatada = postagem.data_encontrado
-    ? new Date(postagem.data_encontrado).toISOString().split('T')[0]
-    : '';
-%>
+  <%
+    const dataEncontradaFormatada = postagem.data_encontrado
+      ? new Date(postagem.data_encontrado).toISOString().split('T')[0]
+      : '';
+  %>
 
-<form method="post" action="/editar/<%= postagem.id_postagem %>">
-  <fieldset style="border: 1px solid #ccc; padding: .75rem; border-radius: 6px; margin-bottom: .75rem;">
-    <legend><strong>Dados do Item</strong></legend>
-    <input name="nome" aria-label="Nome do item" placeholder="Nome do item" value="<%= postagem.item ? postagem.item.nome : '' %>" required>
+  <form method="post" action="/editar/<%= postagem.id_postagem %>">
+    <fieldset class="form-fieldset">
+      <legend>Dados do Item</legend>
 
-    <select name="categoria" aria-label="Categoria" required>
-      <option value="">Selecione a categoria...</option>
-      <% CATEGORIAS.forEach(function (cat) { %>
-        <option value="<%= cat %>" <%= (postagem.item && postagem.item.categoria === cat) ? 'selected' : '' %>><%= cat %></option>
-      <% }) %>
-    </select>
-
-    <input name="cor" aria-label="Cor do item" placeholder="Cor" value="<%= postagem.item ? (postagem.item.cor || '') : '' %>">
-
-    <div id="lista-fotos-item" style="margin-top: .5rem;">
-      <label><strong>Fotos do item (URLs):</strong></label>
-      <% const fotosAtuais = (postagem.item && postagem.item.imagens && postagem.item.imagens.length > 0) ? postagem.item.imagens.map(i => i.url) : ['']; %>
-      <% fotosAtuais.forEach(function (url) { %>
-        <div class="campo-foto" style="margin-top: .3rem;">
-          <input type="url" name="imagens[]" value="<%= url %>" placeholder="https://exemplo.com/foto.jpg" style="width: 80%;">
-          <button type="button" onclick="this.parentElement.remove()">Remover</button>
+      <div class="form-grid-3">
+        <div class="form-group">
+          <label for="nome">Nome do item *</label>
+          <input id="nome" name="nome" value="<%= postagem.item ? postagem.item.nome : '' %>" required>
         </div>
-      <% }) %>
+
+        <div class="form-group">
+          <label for="categoria">Categoria *</label>
+          <select id="categoria" name="categoria" required>
+            <option value="">Selecione a categoria...</option>
+            <% CATEGORIAS.forEach(function (cat) { %>
+              <option value="<%= cat %>" <%= (postagem.item && postagem.item.categoria === cat) ? 'selected' : '' %>><%= cat %></option>
+            <% }) %>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="cor">Cor</label>
+          <input id="cor" name="cor" value="<%= postagem.item ? (postagem.item.cor || '') : '' %>">
+        </div>
+      </div>
+
+      <div id="lista-fotos-item" style="margin-top: 14px;">
+        <label style="font-size: 0.92rem; font-weight: 600;">Fotos do item (URLs):</label>
+        <% const fotosAtuais = (postagem.item && postagem.item.imagens && postagem.item.imagens.length > 0) ? postagem.item.imagens.map(i => i.url) : ['']; %>
+        <% fotosAtuais.forEach(function (url) { %>
+          <div class="campo-foto">
+            <input type="url" name="imagens[]" value="<%= url %>" placeholder="https://exemplo.com/foto.jpg">
+            <button type="button" class="btn btn-outline btn-sm" onclick="this.parentElement.remove()">Remover</button>
+          </div>
+        <% }) %>
+      </div>
+
+      <button type="button" id="btn-add-foto-item" class="btn btn-outline btn-sm" style="margin-top: 10px;">
+        + Adicionar outra foto
+      </button>
+    </fieldset>
+
+    <fieldset class="form-fieldset">
+      <legend>Dados da Postagem</legend>
+
+      <div class="form-grid-3">
+        <div class="form-group">
+          <label for="status">Status</label>
+          <select id="status" name="status">
+            <% STATUS.forEach(function (s) { %>
+              <option value="<%= s %>" <%= postagem.status === s ? 'selected' : '' %>><%= s %></option>
+            <% }) %>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="local">Local</label>
+          <input id="local" name="local" value="<%= postagem.local || '' %>">
+        </div>
+
+        <div class="form-group">
+          <label for="data_encontrado">Data que foi encontrado</label>
+          <input type="date" id="data_encontrado" name="data_encontrado" value="<%= dataEncontradaFormatada %>">
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top: 14px;">
+        <label for="descricao">Descrição da postagem</label>
+        <textarea id="descricao" name="descricao" rows="3"><%= postagem.descricao || '' %></textarea>
+      </div>
+    </fieldset>
+
+    <div style="display: flex; gap: 10px;">
+      <button type="submit" class="btn btn-black">Salvar Alterações</button>
+      <a href="/" class="btn btn-outline">Cancelar</a>
     </div>
-
-    <button type="button" id="btn-add-foto-item" style="margin-top: .4rem;">+ Adicionar outra foto</button>
-  </fieldset>
-
-  <fieldset style="border: 1px solid #ccc; padding: .75rem; border-radius: 6px; margin-bottom: .75rem;">
-    <legend><strong>Dados da Postagem</strong></legend>
-
-    <select name="status" aria-label="Status">
-      <% STATUS.forEach(function (s) { %>
-        <option value="<%= s %>" <%= postagem.status === s ? 'selected' : '' %>><%= s %></option>
-      <% }) %>
-    </select>
-
-    <input name="local" aria-label="Local" placeholder="Local" value="<%= postagem.local || '' %>">
-
-    <label for="data_encontrado">Data que foi encontrado:</label>
-    <input type="date" id="data_encontrado" name="data_encontrado" value="<%= dataEncontradaFormatada %>">
-
-    <div style="margin-top: .5rem;">
-      <textarea name="descricao" rows="3" style="width: 100%;" placeholder="Descrição da postagem..."><%= postagem.descricao || '' %></textarea>
-    </div>
-  </fieldset>
-
-  <button type="submit">Salvar Alterações</button>
-</form>
-
-<p><a href="/">Cancelar</a></p>
+  </form>
+</section>
 
 <script>
   const btnAddFotoItem = document.getElementById('btn-add-foto-item');
@@ -67,8 +98,7 @@
       const container = document.getElementById('lista-fotos-item');
       const div = document.createElement('div');
       div.className = 'campo-foto';
-      div.style.marginTop = '.3rem';
-      div.innerHTML = '<input type="url" name="imagens[]" placeholder="https://exemplo.com/outra-foto.jpg" style="width: 80%;"> <button type="button" onclick="this.parentElement.remove()">Remover</button>';
+      div.innerHTML = '<input type="url" name="imagens[]" placeholder="https://exemplo.com/outra-foto.jpg"> <button type="button" class="btn btn-outline btn-sm" onclick="this.parentElement.remove()">Remover</button>';
       container.appendChild(div);
     });
   }

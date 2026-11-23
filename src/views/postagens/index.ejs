@@ -1,142 +1,206 @@
-<% const ehAdmin = typeof usuarioLogado !== 'undefined' && usuarioLogado && usuarioLogado.tipo === 1; %>
+<%
+  const ehAdmin = typeof usuarioLogado !== 'undefined' && usuarioLogado && usuarioLogado.tipo === 1;
+  const totalPerdidos = postagens.filter(p => p.status === 'perdido').length;
+  const totalEncontrados = postagens.filter(p => p.status === 'encontrado').length;
+  const totalDevolvidos = postagens.filter(p => p.status === 'devolvido').length;
+%>
+
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="stat-number"><%= totalDevolvidos %></div>
+    <small>Itens Devolvidos</small>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number"><%= totalEncontrados %></div>
+    <small>Itens Achados</small>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number"><%= totalPerdidos %></div>
+    <small>Itens Perdidos</small>
+  </div>
+</div>
 
 <% if (ehAdmin) { %>
-  <section class="card-publicar">
-    <h2>Nova Postagem</h2>
+  <section class="surface-card">
+    <div class="page-header-bar">
+      <h2 class="page-title">Nova Postagem</h2>
+      <span class="page-subtitle">Cadastre o item e as informações da ocorrência</span>
+    </div>
 
     <% erros.forEach(function (e) { %><p class="erro" role="alert"><%= e %></p><% }) %>
 
     <form method="post" action="/">
-      <fieldset style="border: 1px solid #ccc; padding: .75rem; border-radius: 6px; margin-bottom: .75rem;">
-        <legend><strong>Dados do Item</strong></legend>
-        <input name="nome" aria-label="Nome do item" placeholder="Nome do item" value="<%= form.nome || '' %>" required>
+      <fieldset class="form-fieldset">
+        <legend>Dados do Item</legend>
 
-        <select name="categoria" aria-label="Categoria" required>
-          <option value="">Selecione a categoria...</option>
-          <% CATEGORIAS.forEach(function (cat) { %>
-            <option value="<%= cat %>" <%= form.categoria === cat ? 'selected' : '' %>><%= cat %></option>
-          <% }) %>
-        </select>
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label for="nome">Nome do item *</label>
+            <input id="nome" name="nome" placeholder="Ex: Powerbank Branco" value="<%= form.nome || '' %>" required>
+          </div>
 
-        <input name="cor" aria-label="Cor do item" placeholder="Cor (ex: Preto, Azul)" value="<%= form.cor || '' %>">
+          <div class="form-group">
+            <label for="categoria">Categoria *</label>
+            <select id="categoria" name="categoria" required>
+              <option value="">Selecione a categoria...</option>
+              <% CATEGORIAS.forEach(function (cat) { %>
+                <option value="<%= cat %>" <%= form.categoria === cat ? 'selected' : '' %>><%= cat %></option>
+              <% }) %>
+            </select>
+          </div>
 
-        <div id="lista-fotos-item" style="margin-top: .5rem;">
-          <label><strong>Fotos do item (URLs):</strong></label>
+          <div class="form-group">
+            <label for="cor">Cor</label>
+            <input id="cor" name="cor" placeholder="Ex: Preto, Azul" value="<%= form.cor || '' %>">
+          </div>
+        </div>
+
+        <div id="lista-fotos-item" style="margin-top: 14px;">
+          <label style="font-size: 0.92rem; font-weight: 600;">Fotos do item (URLs):</label>
           <% const fotosForm = Array.isArray(form.imagens) ? form.imagens : (form.imagens ? [form.imagens] : ['']); %>
           <% fotosForm.forEach(function (url) { %>
-            <div class="campo-foto" style="margin-top: .3rem;">
-              <input type="url" name="imagens[]" placeholder="https://exemplo.com/foto.jpg" value="<%= url %>" style="width: 80%;">
+            <div class="campo-foto">
+              <input type="url" name="imagens[]" placeholder="https://exemplo.com/foto.jpg" value="<%= url %>">
             </div>
           <% }) %>
         </div>
 
-        <button type="button" id="btn-add-foto-item" style="margin-top: .4rem;">+ Adicionar outra foto</button>
+        <button type="button" id="btn-add-foto-item" class="btn btn-outline btn-sm" style="margin-top: 10px;">
+          + Adicionar outra foto
+        </button>
       </fieldset>
 
-      <fieldset style="border: 1px solid #ccc; padding: .75rem; border-radius: 6px; margin-bottom: .75rem;">
-        <legend><strong>Dados da Postagem</strong></legend>
+      <fieldset class="form-fieldset">
+        <legend>Dados da Postagem</legend>
 
-        <select name="status" aria-label="Status">
-          <% STATUS.forEach(function (s) { %>
-            <option value="<%= s %>" <%= (form.status || 'perdido') === s ? 'selected' : '' %>><%= s %></option>
-          <% }) %>
-        </select>
+        <div class="form-grid-3">
+          <div class="form-group">
+            <label for="status">Status</label>
+            <select id="status" name="status">
+              <% STATUS.forEach(function (s) { %>
+                <option value="<%= s %>" <%= (form.status || 'perdido') === s ? 'selected' : '' %>><%= s %></option>
+              <% }) %>
+            </select>
+          </div>
 
-        <input name="local" aria-label="Local" placeholder="Local" value="<%= form.local || '' %>">
+          <div class="form-group">
+            <label for="local">Local</label>
+            <input id="local" name="local" placeholder="Ex: Cantina, Laboratório 2" value="<%= form.local || '' %>">
+          </div>
 
-        <label for="data_encontrado">Data que foi encontrado:</label>
-        <input type="date" id="data_encontrado" name="data_encontrado" value="<%= form.data_encontrado || '' %>">
+          <div class="form-group">
+            <label for="data_encontrado">Data que foi encontrado</label>
+            <input type="date" id="data_encontrado" name="data_encontrado" value="<%= form.data_encontrado || '' %>">
+          </div>
+        </div>
 
-        <div style="margin-top: .5rem;">
-          <textarea name="descricao" rows="3" style="width: 100%;" placeholder="Descrição da postagem..."><%= form.descricao || '' %></textarea>
+        <div class="form-group" style="margin-top: 14px;">
+          <label for="descricao">Descrição da postagem</label>
+          <textarea id="descricao" name="descricao" rows="3" placeholder="Detalhes adicionais para identificação..."><%= form.descricao || '' %></textarea>
         </div>
       </fieldset>
 
-      <button type="submit">Publicar Postagem</button>
+      <button type="submit" class="btn btn-red">Publicar Postagem</button>
     </form>
   </section>
 <% } %>
 
-<h2>Postagens</h2>
+<div class="page-header-bar">
+  <h2 class="page-title">Achados e Perdidos</h2>
+  <span class="page-subtitle"><%= postagens.length %> postagem(ns) registrada(s)</span>
+</div>
 
 <% if (postagens.length > 0) { %>
-  <p class="contagem"><%= postagens.length %> postagem(ns) cadastrada(s).</p>
-
-  <% postagens.forEach(function (p) { %>
-    <article class="post-card">
-      <header class="post-cabecalho">
-        <div>
-          <strong>#<%= p.id_postagem %> — <%= p.item ? p.item.nome : 'Item sem nome' %></strong>
-          <span class="badge-status status-<%= p.status %>"><%= p.status.toUpperCase() %></span>
+  <div class="feed-grid" id="grid-postagens">
+    <% postagens.forEach(function (p) { %>
+      <%
+        const fotos = (p.item && Array.isArray(p.item.imagens)) ? p.item.imagens : [];
+        const capaUrl = fotos.length > 0 ? fotos[0].url : null;
+        const termoBusca = [
+          p.item ? p.item.nome : '',
+          p.item ? p.item.categoria : '',
+          p.item ? p.item.cor : '',
+          p.local || '',
+          p.status || ''
+        ].join(' ').toLowerCase();
+      %>
+      <article class="post-card" data-busca="<%= termoBusca %>">
+        <div class="post-cover">
+          <% if (capaUrl) { %>
+            <img src="<%= capaUrl %>" alt="Foto de <%= p.item ? p.item.nome : 'item' %>">
+            <% if (fotos.length > 1) { %>
+              <span class="post-photo-count">+<%= fotos.length - 1 %> foto(s)</span>
+            <% } %>
+          <% } else { %>
+            <div class="post-cover-placeholder">
+              🖼
+              <span>Sem imagem</span>
+            </div>
+          <% } %>
         </div>
-        <small>Publicado em: <%= new Date(p.data_publicacao).toLocaleString('pt-BR') %></small>
-      </header>
 
-      <p>
-        <strong>Categoria:</strong> <%= p.item ? p.item.categoria : '-' %>
-        <% if (p.item && p.item.cor) { %> | <strong>Cor:</strong> <%= p.item.cor %><% } %>
-        <% if (p.local) { %> | <strong>Local:</strong> <%= p.local %><% } %>
-      </p>
+        <div class="post-body">
+          <div class="post-header">
+            <h3 class="post-title"><%= p.item ? p.item.nome : 'Item sem nome' %></h3>
+            <span class="badge-status status-<%= p.status %>"><%= p.status %></span>
+          </div>
 
-      <% if (p.data_encontrado) { %>
-        <p><strong>Data que foi encontrado:</strong> <%= new Date(p.data_encontrado).toLocaleDateString('pt-BR') %></p>
-      <% } %>
+          <div class="post-meta">
+            <span class="meta-chip"><%= p.item ? p.item.categoria : '-' %></span>
+            <% if (p.item && p.item.cor) { %>
+              <span class="meta-chip">Cor: <%= p.item.cor %></span>
+            <% } %>
+            <% if (p.local) { %>
+              <span class="meta-chip">📍 <%= p.local %></span>
+            <% } %>
+          </div>
 
-      <% if (p.descricao) { %>
-        <p><%= p.descricao %></p>
-      <% } %>
+          <% if (p.descricao) { %>
+            <p class="post-desc"><%= p.descricao %></p>
+          <% } %>
 
-      <% if (p.item && p.item.imagens && p.item.imagens.length > 0) { %>
-        <div class="post-galeria">
-          <% p.item.imagens.forEach(function (img, idx) { %>
-            <a href="<%= img.url %>" target="_blank" rel="noopener">
-              <img src="<%= img.url %>" alt="Foto <%= idx + 1 %> de <%= p.item.nome %>">
-            </a>
-          <% }) %>
+          <span class="post-date">
+            Publicado em <%= new Date(p.data_publicacao).toLocaleString('pt-BR') %>
+          </span>
         </div>
-      <% } %>
 
-      <button
-        type="button"
-        class="btn-ver-detalhes"
-        aria-label="Ver detalhes da postagem #<%= p.id_postagem %>"
-        data-postagem-id="<%= p.id_postagem %>"
-      >
-        👁️ Detalhes
-      </button>
+        <footer class="post-footer">
+          <button
+            type="button"
+            class="btn btn-black btn-sm btn-ver-detalhes"
+            aria-label="Ver detalhes da postagem #<%= p.id_postagem %>"
+            data-postagem-id="<%= p.id_postagem %>"
+          >
+            👁️ Detalhes
+          </button>
 
-      <% if (ehAdmin) { %>
-        <footer class="post-rodape">
-          <a href="/editar/<%= p.id_postagem %>">Editar</a>
-          <form method="post" action="/deletar/<%= p.id_postagem %>" style="display:inline;" onsubmit="return confirm('Excluir esta postagem e o item vinculado?')">
-            <button type="submit">Excluir</button>
-          </form>
+          <% if (ehAdmin) { %>
+            <div class="post-admin-actions">
+              <a href="/editar/<%= p.id_postagem %>" class="btn btn-outline btn-sm">Editar</a>
+              <form method="post" action="/deletar/<%= p.id_postagem %>" style="display:inline;" onsubmit="return confirm('Excluir esta postagem e o item vinculado?')">
+                <button type="submit" class="btn btn-red btn-sm">Excluir</button>
+              </form>
+            </div>
+          <% } %>
         </footer>
-      <% } %>
-    </article>
-  <% }) %>
+      </article>
+    <% }) %>
+  </div>
 <% } else { %>
-  <p class="contagem">Nenhuma postagem cadastrada.</p>
+  <div class="surface-card" style="text-align: center;">
+    <p class="page-subtitle">Nenhuma postagem cadastrada até o momento.</p>
+  </div>
 <% } %>
 
-<script>
-  const btnAddFotoItem = document.getElementById('btn-add-foto-item');
-  if (btnAddFotoItem) {
-    btnAddFotoItem.addEventListener('click', () => {
-      const container = document.getElementById('lista-fotos-item');
-      const div = document.createElement('div');
-      div.className = 'campo-foto';
-      div.style.marginTop = '.3rem';
-      div.innerHTML = '<input type="url" name="imagens[]" placeholder="https://exemplo.com/outra-foto.jpg" style="width: 80%;"> <button type="button" onclick="this.parentElement.remove()">Remover</button>';
-      container.appendChild(div);
-    });
-  }
-</script>
-
-
 <dialog id="modal-detalhes-postagem">
-  <div id="conteudo-detalhes-postagem"></div>
-  <button type="button" id="btn-fechar-detalhes">Fechar</button>
+  <div class="modal-header-bar">
+    <h3 id="modal-titulo-postagem">Detalhes da Postagem</h3>
+    <button type="button" id="btn-fechar-detalhes-top" class="btn btn-black btn-sm">✕</button>
+  </div>
+  <div id="conteudo-detalhes-postagem" class="modal-body-content"></div>
+  <div class="modal-footer-bar">
+    <button type="button" id="btn-fechar-detalhes" class="btn btn-black">Fechar</button>
+  </div>
 </dialog>
 
 <%
@@ -157,10 +221,35 @@
 %>
 
 <script>
+  const btnAddFotoItem = document.getElementById('btn-add-foto-item');
+  if (btnAddFotoItem) {
+    btnAddFotoItem.addEventListener('click', () => {
+      const container = document.getElementById('lista-fotos-item');
+      const div = document.createElement('div');
+      div.className = 'campo-foto';
+      div.innerHTML = '<input type="url" name="imagens[]" placeholder="https://exemplo.com/outra-foto.jpg"> <button type="button" class="btn btn-outline btn-sm" onclick="this.parentElement.remove()">Remover</button>';
+      container.appendChild(div);
+    });
+  }
+
+  // Filtro dinâmico pela barra de busca do header
+  const inputPesquisa = document.getElementById('filtro-pesquisa-global');
+  if (inputPesquisa) {
+    inputPesquisa.addEventListener('input', () => {
+      const termo = inputPesquisa.value.trim().toLowerCase();
+      document.querySelectorAll('#grid-postagens .post-card').forEach((card) => {
+        const texto = card.getAttribute('data-busca') || '';
+        card.style.display = texto.includes(termo) ? 'flex' : 'none';
+      });
+    });
+  }
+
   const DADOS_POSTAGENS = <%- JSON.stringify(postagensSerializadas) %>;
   const dialogDetalhes = document.getElementById('modal-detalhes-postagem');
   const conteudoDetalhes = document.getElementById('conteudo-detalhes-postagem');
+  const tituloModal = document.getElementById('modal-titulo-postagem');
   const btnFecharDetalhes = document.getElementById('btn-fechar-detalhes');
+  const btnFecharTop = document.getElementById('btn-fechar-detalhes-top');
 
   function escaparHtml(texto) {
     return String(texto ?? '')
@@ -174,14 +263,15 @@
   function renderizarDetalhes(p) {
     const item = p.item || {};
     const imagens = Array.isArray(item.imagens) ? item.imagens : [];
+    tituloModal.textContent = `Detalhes da Postagem #${p.id_postagem}`;
 
     const htmlImagens = imagens.length > 0
       ? `<div>
            <p><strong>Fotos do item:</strong></p>
-           <div>
+           <div class="modal-gallery">
              ${imagens.map((url, idx) => `
                <a href="${escaparHtml(url)}" target="_blank" rel="noopener">
-                 <img src="${escaparHtml(url)}" alt="Foto ${idx + 1} de ${escaparHtml(item.nome || 'item')}" width="150">
+                 <img src="${escaparHtml(url)}" alt="Foto ${idx + 1} de ${escaparHtml(item.nome || 'item')}">
                </a>
              `).join('')}
            </div>
@@ -189,19 +279,17 @@
       : '<p><strong>Fotos do item:</strong> Nenhuma foto anexada.</p>';
 
     conteudoDetalhes.innerHTML = `
-      <h3>Detalhes da Postagem #${escaparHtml(p.id_postagem)}</h3>
-
-      <fieldset>
-        <legend><strong>Dados do Item</strong></legend>
+      <fieldset class="form-fieldset" style="margin-bottom:0;">
+        <legend>Dados do Item</legend>
         <p><strong>Nome:</strong> ${escaparHtml(item.nome || '-')}</p>
         <p><strong>Categoria:</strong> ${escaparHtml(item.categoria || '-')}</p>
         <p><strong>Cor:</strong> ${escaparHtml(item.cor)}</p>
         ${htmlImagens}
       </fieldset>
 
-      <fieldset>
-        <legend><strong>Dados da Postagem</strong></legend>
-        <p><strong>Status:</strong> ${escaparHtml(p.status)}</p>
+      <fieldset class="form-fieldset" style="margin-bottom:0;">
+        <legend>Dados da Postagem</legend>
+        <p><strong>Status:</strong> <span class="badge-status status-${escaparHtml(p.status)}">${escaparHtml(p.status)}</span></p>
         <p><strong>Local:</strong> ${escaparHtml(p.local)}</p>
         <p><strong>Data da publicação:</strong> ${escaparHtml(p.data_publicacao)}</p>
         <p><strong>Data que foi encontrado:</strong> ${escaparHtml(p.data_encontrado)}</p>
@@ -210,7 +298,7 @@
     `;
   }
 
-  if (dialogDetalhes && conteudoDetalhes && btnFecharDetalhes) {
+  if (dialogDetalhes && conteudoDetalhes) {
     document.querySelectorAll('.btn-ver-detalhes').forEach((btn) => {
       btn.addEventListener('click', () => {
         const id = Number(btn.getAttribute('data-postagem-id'));
@@ -226,8 +314,8 @@
       });
     });
 
-    btnFecharDetalhes.addEventListener('click', () => {
-      dialogDetalhes.close();
+    [btnFecharDetalhes, btnFecharTop].forEach((b) => {
+      if (b) b.addEventListener('click', () => dialogDetalhes.close());
     });
 
     dialogDetalhes.addEventListener('click', (evento) => {
