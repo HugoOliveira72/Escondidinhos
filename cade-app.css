@@ -1,0 +1,85 @@
+/* Functional demo UI additions for Cadê? */
+.cade-toast {
+  position: fixed; right: 22px; bottom: 22px; z-index: 1000;
+  max-width: min(420px, calc(100vw - 32px)); padding: 13px 18px;
+  color: #fff; background: #242424; border-radius: 8px;
+  box-shadow: 0 8px 28px rgba(0,0,0,.22); opacity: 0;
+  transform: translateY(12px); pointer-events: none; transition: .2s ease;
+}
+.cade-toast.show { opacity: 1; transform: translateY(0); }
+.cade-toast[data-type="error"] { background: #8f1010; }
+.cade-notification-count { display: inline-flex; align-items: center; justify-content: center; min-width: 19px; height: 19px; padding: 0 5px; margin-left: -12px; margin-top: -27px; border-radius: 99px; color: #fff; background: #242424; font-size: 11px; font-weight: 700; vertical-align: top; }
+.cade-item-list, .cade-notification-list { display: flex; flex-direction: column; gap: 12px; }
+.cade-item-card { display: flex; align-items: center; gap: 15px; padding: 14px; border-radius: 9px; background: #f2f4f7; color: #161616; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease; }
+.cade-item-card:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(0,0,0,.09); }
+.cade-item-image { width: 72px; height: 72px; flex: 0 0 72px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 7px; background: #d9dce1; font-size: 26px; }
+.cade-item-image img, .cade-detail-photo img, .cade-upload-preview img { width: 100%; height: 100%; object-fit: cover; }
+.cade-item-copy { display: flex; min-width: 0; flex-direction: column; gap: 4px; }
+.cade-item-copy strong { font-size: 1.04rem; }
+.cade-item-copy small { color: #555; }
+.cade-status { display: inline-flex; width: fit-content; padding: 5px 9px; border-radius: 5px; background: #e8e8e8; color: #343434; font-size: .86rem; font-weight: 700; }
+.cade-status.status-procurando { background: #fff0df; color: #8c4a00; }
+.cade-status.status-encontrado { background: #e4f6e9; color: #176b32; }
+.cade-status.status-arquivado { background: #e7e7e7; color: #656565; }
+.cade-card-arrow { margin-left: auto; color: #777; font-size: 1.6rem; }
+.cade-empty { display: flex; flex-direction: column; align-items: center; gap: 9px; padding: 42px 18px; color: #555; background: #f6f6f6; border: 1px dashed #c7c7c7; border-radius: 10px; text-align: center; }
+.cade-empty > div { font-size: 2rem; }
+.cade-empty strong { color: #222; font-size: 1.05rem; }
+.cade-empty p { max-width: 440px; line-height: 1.5; }
+.cade-notification { display: flex; align-items: flex-start; gap: 13px; padding: 15px; border-radius: 9px; background: #f2f4f7; text-align: left; }
+.cade-notification.unread { background: #fff4f1; border-left: 4px solid #cc0000; }
+.cade-avatar { display: flex; flex: 0 0 40px; width: 40px; height: 40px; align-items: center; justify-content: center; border-radius: 50%; color: white; background: #cc0000; }
+.cade-notification-text { flex: 1; min-width: 0; }
+.cade-notification-text p { margin: 5px 0; line-height: 1.45; }
+.cade-notification-text small { color: #666; }
+.cade-text-button { padding: 5px 8px; border: 0; color: #a00000; background: transparent; cursor: pointer; white-space: nowrap; }
+.cade-search-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.cade-search-heading p { margin-top: 6px; color: #666; }
+.cade-search-filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+.cade-search-filters button { padding: 7px 14px; border: 1px solid #ccc; border-radius: 20px; background: #fff; cursor: pointer; }
+.cade-search-filters button.active { color: #fff; border-color: #cc0000; background: #cc0000; }
+.cade-search-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.cade-search-grid .cade-item-card { min-width: 0; }
+.cade-detail-layout { display: grid; grid-template-columns: minmax(160px, 220px) minmax(0, 1fr); gap: 28px; align-items: start; }
+.cade-detail-photo { display: flex; height: 190px; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 12px; border-radius: 9px; background: #e2e8f0; font-size: 42px; }
+.cade-detail-info { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.cade-detail-info h2 { margin-top: 7px; }
+.cade-type-pill { color: #a00000; font-size: .72rem; font-weight: 800; letter-spacing: .08em; }
+.cade-description { max-width: 760px; line-height: 1.6; white-space: pre-wrap; }
+.cade-detail-actions, .cade-form-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+.cade-back-link { display: inline-block; margin-bottom: 15px; color: #a00000; text-decoration: none; }
+.cade-form { display: flex; flex-direction: column; gap: 17px; width: 100%; max-width: 860px; margin-top: 20px; }
+.cade-form label, #cadeContactForm label { display: flex; flex-direction: column; gap: 7px; font-weight: 600; }
+.cade-form input, .cade-form textarea, .cade-form select, #cadeContactForm textarea { width: 100%; padding: 11px 12px; border: 1px solid #c8c8c8; border-radius: 5px; background: #fff; font: inherit; font-weight: 400; }
+.cade-form input:focus, .cade-form textarea:focus, .cade-form select:focus, #cadeContactForm textarea:focus { outline: 2px solid rgba(204,0,0,.18); border-color: #cc0000; }
+.cade-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 17px; }
+.cade-full-row { grid-column: 1 / -1; }
+.cade-upload-row { display: flex; align-items: center; gap: 14px; }
+.cade-upload-preview { display: flex; flex: 0 0 100px; width: 100px; height: 82px; align-items: center; justify-content: center; overflow: hidden; border-radius: 7px; background: #e2e8f0; font-size: 27px; }
+.cade-form-intro { margin-top: 8px; color: #666; }
+.cade-modal-close { position: absolute; top: 9px; right: 13px; padding: 0 5px; border: 0; background: none; font-size: 28px; cursor: pointer; }
+#cadeContactModal .modal-content { position: relative; }
+#cadeContactForm { display: flex; flex-direction: column; gap: 15px; text-align: left; }
+.cade-profile-form { width: 100%; }
+.cade-profile-form > div { width: 100%; }
+
+@media (max-width: 700px) {
+  .cade-detail-layout { grid-template-columns: 1fr; }
+  .cade-detail-photo { max-width: 260px; }
+  .cade-form-grid { grid-template-columns: 1fr; }
+  .cade-full-row { grid-column: auto; }
+  .cade-search-heading { align-items: flex-start; flex-direction: column; }
+  .cade-notification { flex-wrap: wrap; }
+  .cade-text-button { margin-left: 50px; }
+  .app-header { gap: 8px; padding: 10px; }
+  .app-header .logo-area { flex: 0 0 80px; }
+  .search-bar { min-width: 100px; margin: 0 6px; }
+  .header-icons { gap: 7px; }
+  .header-icons span img { width: 30px; }
+  .stat-grid { width: 100% !important; flex-wrap: wrap; justify-content: center; }
+  .screen-container { min-height: 100vh; height: auto; }
+}
+
+.cade-demo-credentials { margin-top: 20px; padding: 12px; border-radius: 6px; background: #f5f5f5; color: #555; font-size: .82rem; line-height: 1.65; text-align: center; }
+.cade-demo-credentials strong { color: #222; }
+.cade-demo-credentials code { padding: 1px 4px; border-radius: 3px; background: #e6e6e6; color: #222; }

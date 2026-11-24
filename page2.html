@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Entrar</title>
     <link rel="stylesheet" href="registerOrLogin.css">
+    <link rel="stylesheet" href="cade-app.css">
     <script src="https://cdn.tailwindcss.com"></script>
 
 </head>
@@ -38,19 +39,19 @@
                         <span>Aluno</span>
                     </label>
                     <label class="inline-flex items-center space-x-2.5 cursor-pointer text-gray-800 font-medium text-lg">
-                        <input type="radio" name="userType" value="adm" class="custom-radio" id="adm" onclick="Adm()">
+                        <input type="radio" name="userType" value="adm" class="custom-radio" id="adm">
                         <span>ADM</span>
                     </label>
                 </div>
 
                 <!-- Matrícula ou CPF Field -->
                 <div class="space-y-1">
-                    <label for="identifier" class="block text-gray-800 font-normal text-base sm:text-lg" id="identifier">
+                    <label for="loginIdentifier" class="block text-gray-800 font-normal text-base sm:text-lg">
                         Matrícula ou CPF
                     </label>
                     <input 
                         type="text" 
-                        id="identifier" 
+                        id="loginIdentifier" 
                         name="identifier" 
                         required
                         autocomplete="username"
@@ -85,14 +86,12 @@
 
                 <!-- Submit Button -->
                 <div class="pt-3">
-                    <a href="page7.html">
                     <button 
                         type="submit" 
                         class="w-full bg-brand-red hover:bg-red-700 active:bg-red-800 text-white font-bold text-xl py-2.5 rounded-sm transition-colors duration-150 shadow-sm focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-1"
                     >
                         Login
                     </button>
-                    </a>
                 </div>
 
                 <!-- Footer Navigation Links -->
@@ -106,6 +105,12 @@
                 </div>
 
             </form>
+
+            <div class="cade-demo-credentials">
+              <strong>Acessos de demonstração</strong><br>
+              Aluno: <code>aluno@cade.local</code> / <code>123456</code><br>
+              ADM: selecione ADM · <code>admin@cade.local</code> / <code>admin123</code>
+            </div>
 
             <!-- Message Notification Container -->
             <div id="toastMessage" class="hidden mt-6 p-3 text-center text-sm rounded border"></div>
@@ -125,5 +130,7 @@
                     } 
                 }
     </script>
+
+  <script src="./JS/app.js"></script>
 </body>
 </html>

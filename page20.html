@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head><meta charset="UTF-8"><title>Cadastrar Achado</title><link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="./CSS/registerItem.css"></head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Cadastrar Achado</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="./CSS/registerItem.css"><link rel="stylesheet" href="./cade-app.css"></head>
 <body>
   <div class="screen-container" style="padding:30px;">
-    <h2>Cadastre seu Item Achado</h2>
-    <div style="display:grid; grid-template-columns: 1fr 250px; gap:20px; margin-top:20px;">
-      <div style="display:flex; flex-direction:column; gap:15px;">
-        <label>Item:</label><input type="text">
-        <label>Local onde foi encontrado:</label><input type="text">
-        <label>Telefone / Celular</label><input type="text">
-        <label>Descrição do Item:</label><textarea rows="3"></textarea>
+    <a href="page7.html" class="cade-back-link">← Início</a>
+    <h2>Cadastre seu item achado</h2>
+    <p class="cade-form-intro">Ajude alguém a recuperar um objeto encontrado na universidade.</p>
+    <form class="cade-form" data-item-form data-item-type="found">
+      <div class="cade-form-grid">
+        <label>Item:<input name="title" type="text" required maxlength="80" placeholder="Ex.: Estojo azul"></label>
+        <label>Marca:<input name="brand" type="text" placeholder="Marca, se houver"></label>
+        <label>Local onde foi encontrado:<input name="location" type="text" required placeholder="Ex.: Biblioteca, bloco B"></label>
+        <label>Telefone / celular:<input name="phone" type="tel" placeholder="Como podem falar com você"></label>
+        <label class="cade-full-row">Descrição do item:<textarea name="description" rows="4" placeholder="Cor, características e outros detalhes"></textarea></label>
+        <div class="cade-full-row">
+          <label for="foundImage">Foto (JPG, PNG ou WEBP)</label>
+          <div class="cade-upload-row"><div class="cade-upload-preview" data-image-preview>🖼</div><input id="foundImage" data-item-image type="file" accept="image/png,image/jpeg,image/webp"></div>
+          <small>Imagem de até 1,5 MB. Opcional.</small>
+        </div>
       </div>
-      <div style="display:flex; flex-direction:column; gap:15px; align-items:center;">
-        <label style="align-self:flex-start;">Marca</label><input type="text">
-        <div class="card-box" style="width:100%; height:150px;">🖼</div>
-        <button class="btn-red" style="width:100%; background:#2563eb;">Anexar Arquivo jpg, png</button>
-      </div>
-    </div>
-    <a href="page35.html" class="btn-red" style="margin-top:20px; width:100%; text-align:center;">Cadastrar Item</a>
+      <div class="cade-form-actions"><button type="submit" class="btn-red">Cadastrar item</button><a href="page35.html" class="btn-black">Cancelar</a></div>
+    </form>
   </div>
+  <script src="./JS/app.js"></script>
 </body>
 </html>
