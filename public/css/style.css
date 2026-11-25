@@ -308,6 +308,18 @@ body {
   font-size: 0.95rem;
 }
 
+.inputString {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  font-size: 0.96rem;
+  font-family: inherit;
+  background-color: #ffffff;
+  color: var(--text-main);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
 /* ==================== MENSAGENS FLASH ==================== */
 .aviso, .erro {
   padding: 12px 16px;
