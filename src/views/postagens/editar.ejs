@@ -19,7 +19,7 @@
       <div class="form-grid-3">
         <div class="form-group">
           <label for="nome">Nome do item *</label>
-          <input id="nome" name="nome" value="<%= postagem.item ? postagem.item.nome : '' %>" required>
+          <input class="inputString" id="nome" name="nome" value="<%= postagem.item ? postagem.item.nome : '' %>" required>
         </div>
 
         <div class="form-group">
@@ -34,7 +34,7 @@
 
         <div class="form-group">
           <label for="cor">Cor</label>
-          <input id="cor" name="cor" value="<%= postagem.item ? (postagem.item.cor || '') : '' %>">
+          <input class="inputString" id="cor" name="cor" value="<%= postagem.item ? (postagem.item.cor || '') : '' %>">
         </div>
       </div>
 
@@ -82,7 +82,7 @@
 
         <div class="form-group">
           <label for="local">Local</label>
-          <input id="local" name="local" value="<%= postagem.local || '' %>">
+          <input class="inputString" id="local" name="local" value="<%= postagem.local || '' %>">
         </div>
 
         <div class="form-group">
