@@ -38,20 +38,33 @@
         </div>
       </div>
 
-      <div id="lista-fotos-item" style="margin-top: 14px;">
-        <label style="font-size: 0.92rem; font-weight: 600;">Fotos do item (URLs):</label>
-        <% const fotosAtuais = (postagem.item && postagem.item.imagens && postagem.item.imagens.length > 0) ? postagem.item.imagens.map(i => i.url) : ['']; %>
-        <% fotosAtuais.forEach(function (url) { %>
-          <div class="campo-foto">
-            <input type="url" name="imagens[]" value="<%= url %>" placeholder="https://exemplo.com/foto.jpg">
-            <button type="button" class="btn btn-outline btn-sm" onclick="this.parentElement.remove()">Remover</button>
+      <% const fotosAtuais = (postagem.item && Array.isArray(postagem.item.imagens)) ? postagem.item.imagens : []; %>
+      <% if (fotosAtuais.length > 0) { %>
+        <div style="margin-top: 14px;">
+          <label style="font-size: 0.92rem; font-weight: 600;">Fotos atuais:</label>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px;">
+            <% fotosAtuais.forEach(function (img, idx) { %>
+              <img
+                src="<%= img.url %>"
+                alt="Foto atual <%= idx + 1 %>"
+                style="width: 84px; height: 84px; object-fit: cover; border-radius: 6px; border: 1px solid #ddd;"
+              >
+            <% }) %>
           </div>
-        <% }) %>
-      </div>
+        </div>
+      <% } %>
 
-      <button type="button" id="btn-add-foto-item" class="btn btn-outline btn-sm" style="margin-top: 10px;">
-        + Adicionar outra foto
-      </button>
+      <div class="form-group" style="margin-top: 14px;">
+        <label for="imagens">Substituir fotos do item (opcional, até 5):</label>
+        <input
+          type="file"
+          id="imagens"
+          name="imagens"
+          accept="image/png, image/jpeg, image/webp, image/gif"
+          multiple
+        >
+        <small class="page-subtitle">Deixe em branco para manter as fotos atuais.</small>
+      </div>
     </fieldset>
 
     <fieldset class="form-fieldset">
@@ -90,16 +103,3 @@
     </div>
   </form>
 </section>
-
-<script>
-  const btnAddFotoItem = document.getElementById('btn-add-foto-item');
-  if (btnAddFotoItem) {
-    btnAddFotoItem.addEventListener('click', () => {
-      const container = document.getElementById('lista-fotos-item');
-      const div = document.createElement('div');
-      div.className = 'campo-foto';
-      div.innerHTML = '<input type="url" name="imagens[]" placeholder="https://exemplo.com/outra-foto.jpg"> <button type="button" class="btn btn-outline btn-sm" onclick="this.parentElement.remove()">Remover</button>';
-      container.appendChild(div);
-    });
-  }
-</script>

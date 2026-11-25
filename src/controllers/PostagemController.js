@@ -1,6 +1,7 @@
 const express = require('express');
 const PostagemDAO = require('../dao/PostagemDAO');
 const { flash } = require('../extensions/flash');
+const upload = require('../middlewares/upload');
 
 const postagemRouter = express.Router();
 const TIPO_ADMIN = 1;
@@ -25,6 +26,19 @@ function exigirAdmin(req, res, next) {
   }
 
   return next();
+}
+
+// Middleware para capturar erros do Multer (ex.: tamanho ou tipo de arquivo inválido)
+function lidarComUpload(maxArquivos = 5) {
+  const middleware = upload.array('imagens', maxArquivos);
+  return (req, res, next) => {
+    middleware(req, res, (err) => {
+      if (err) {
+        req.erroUpload = err.message || 'Erro ao processar o envio da imagem.';
+      }
+      return next();
+    });
+  };
 }
 
 postagemRouter.param('id', (req, res, next, id) => {
@@ -60,8 +74,12 @@ postagemRouter
       erros: [],
     });
   })
-  .post(exigirAdmin, async (req, res) => {
+  .post(exigirAdmin, lidarComUpload(5), async (req, res) => {
     try {
+      if (req.erroUpload) {
+        throw new Error(req.erroUpload);
+      }
+
       const dados = dadosDoForm(req.body);
       if (!dados.nome || !dados.nome.trim()) {
         throw new Error('Informe o nome do item.');
@@ -69,6 +87,9 @@ postagemRouter
       if (!dados.categoria) {
         throw new Error('Selecione a categoria do item.');
       }
+
+      // Caminhos públicos salvos no banco (via ItemImagem.url)
+      dados.imagens = (req.files || []).map((file) => `/uploads/${file.filename}`);
 
       await PostagemDAO.criarComItem(dados);
       flash(req, 'Postagem e item cadastrados com sucesso!');
@@ -101,14 +122,31 @@ postagemRouter
       erros: [],
     });
   })
-  .post(async (req, res) => {
+  .post(lidarComUpload(5), async (req, res) => {
     try {
+      if (req.erroUpload) {
+        throw new Error(req.erroUpload);
+      }
+
       const dados = dadosDoForm(req.body);
       if (!dados.nome || !dados.nome.trim()) {
         throw new Error('Informe o nome do item.');
       }
       if (!dados.categoria) {
         throw new Error('Selecione a categoria do item.');
+      }
+
+      const postagemAtual = await PostagemDAO.buscarPorId(req.params.id);
+      if (!postagemAtual) {
+        return res.status(404).send('Postagem não encontrada.');
+      }
+
+      // Se enviou novas imagens, usa elas; caso contrário, mantém as atuais
+      if (req.files && req.files.length > 0) {
+        dados.imagens = req.files.map((file) => `/uploads/${file.filename}`);
+      } else {
+        const imagensExistentes = postagemAtual.item?.imagens || [];
+        dados.imagens = imagensExistentes.map((img) => img.url);
       }
 
       await PostagemDAO.atualizarComItem(req.params.id, dados);

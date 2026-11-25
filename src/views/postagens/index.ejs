@@ -55,19 +55,17 @@
           </div>
         </div>
 
-        <div id="lista-fotos-item" style="margin-top: 14px;">
-          <label style="font-size: 0.92rem; font-weight: 600;">Fotos do item (URLs):</label>
-          <% const fotosForm = Array.isArray(form.imagens) ? form.imagens : (form.imagens ? [form.imagens] : ['']); %>
-          <% fotosForm.forEach(function (url) { %>
-            <div class="campo-foto">
-              <input type="url" name="imagens[]" placeholder="https://exemplo.com/foto.jpg" value="<%= url %>">
-            </div>
-          <% }) %>
+        <div class="form-group" style="margin-top: 14px;">
+          <label for="imagens">Fotos do item (selecione uma ou mais do computador, até 5):</label>
+          <input
+            type="file"
+            id="imagens"
+            name="imagens"
+            accept="image/png, image/jpeg, image/webp, image/gif"
+            multiple
+          >
+          <small class="page-subtitle">Formatos aceitos: JPG, PNG, WEBP ou GIF (máx. 5 MB cada).</small>
         </div>
-
-        <button type="button" id="btn-add-foto-item" class="btn btn-outline btn-sm" style="margin-top: 10px;">
-          + Adicionar outra foto
-        </button>
       </fieldset>
 
       <fieldset class="form-fieldset">
@@ -221,17 +219,6 @@
 %>
 
 <script>
-  const btnAddFotoItem = document.getElementById('btn-add-foto-item');
-  if (btnAddFotoItem) {
-    btnAddFotoItem.addEventListener('click', () => {
-      const container = document.getElementById('lista-fotos-item');
-      const div = document.createElement('div');
-      div.className = 'campo-foto';
-      div.innerHTML = '<input type="url" name="imagens[]" placeholder="https://exemplo.com/outra-foto.jpg"> <button type="button" class="btn btn-outline btn-sm" onclick="this.parentElement.remove()">Remover</button>';
-      container.appendChild(div);
-    });
-  }
-
   // Filtro dinâmico pela barra de busca do header
   const inputPesquisa = document.getElementById('filtro-pesquisa-global');
   if (inputPesquisa) {
