@@ -370,6 +370,7 @@ select {
   background-color: #ffffff;
   color: var(--text-main);
   transition: border-color 0.2s, box-shadow 0.2s;
+  resize: vertical;
 }
 
 input:focus,
