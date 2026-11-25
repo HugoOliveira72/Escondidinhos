@@ -1,0 +1,19 @@
+services:
+  cade-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cade-sistema
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: "file:/app/instance/itens.db"
+      SESSION_SECRET: "dw2-chave-de-aula"
+    volumes:
+      - cade_instance_data:/app/instance
+    restart: unless-stopped
+
+volumes:
+  cade_instance_data:
