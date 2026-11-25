@@ -1,35 +1,64 @@
 # Cadê? - MVC + ORM + DAO + SQLite (Node.js + Express 5)
 
-Estruturado da mesma forma que o `projeto-integrador-web2` (Flask).
-Requer Node.js 18 ou superior.
+Requer **Docker** (recomendado) ou **Node.js 18 ou superior** para execução local.
 
-## Como rodar
-```bash
-npm install
-npm start            # http://localhost:3000
-npm run consultar    # lista o que está gravado no banco (equivale ao consultar.py)
-```
+---
 
-## Equivalência com o projeto Flask
-| Flask (Python)                    | Node (este projeto)                  |
-|-----------------------------------|--------------------------------------|
-| app.py                            | src/app.js                           |
-| extensions/__init__.py (db)       | src/extensions/index.js (db)         |
-| database.py                       | src/database.js                      |
-| models/evento.py                  | src/models/Item.js                   |
-| dao/evento_dao.py                 | src/dao/ItemDAO.js                   |
-| controllers/evento_controller.py  | src/controllers/ItemController.js    |
-| templates/base.html               | src/views/layout.ejs                 |
-| templates/index.html, editar.html | src/views/itens/index.ejs, editar.ejs|
-| static/css/style.css              | public/css/style.css                 |
-| requirements.txt + venv           | package.json + node_modules          |
-| instance/eventos.db               | instance/itens.db                    |
-| consultar.py                      | consultar.js                         |
+## Como rodar com Docker (Jeito mais fácil)
 
-## Express 5: o que mudou em relação ao Express 4
-- Handlers `async` são passados direto para a rota; o Express captura os erros.
-  (No Express 4 era preciso o `wrap`.)
-- `:id(\\d+)` não é mais aceito; o `<int:id>` do Flask é reproduzido com
-  `itemRouter.param('id', ...)` no controller.
-- `req.body` pode ser `undefined`; o controller trata isso com `b = {}`.
-- O callback de `app.listen` recebe o erro, se houver (ex.: porta ocupada).
+Não é necessário instalar Node.js, SQLite ou dependências manualmente na máquina — basta ter o Docker instalado.
+
+### Passo a passo
+1. Baixe e instale o **Docker Desktop** (Windows/Mac) ou o **Docker Engine** (Linux) e certifique-se de que ele esteja aberto e em execução.
+2. Abra o terminal (por exemplo, pelo **VS Code**) na pasta raiz do projeto (onde está o arquivo `docker-compose.yml`).
+3. Execute o comando para construir a imagem e iniciar o servidor em segundo plano:
+   ```bash
+   docker compose up -d --build
+4. Depois que Depois que rodar, ele irá carregar todas as dependencias e irá abrir o servidor local na porta `localhost:3000`
+
+## Outros comandos (opcional): 
+
+Todos os comandos abaixo devem ser executados dentro da pasta raiz do projeto (onde está o arquivo docker-compose.yml):
+
+1. Rodar em segundo plano (primeira vez ou quando alterar o código):
+
+````Bash
+docker compose up -d --build
+````
+(A flag -d significa "detached", ou seja, deixa rodando em segundo plano e libera o terminal.)
+
+2. Rodar em segundo plano (quando a imagem já foi criada e você **não** mudou o código):
+
+````Bash
+docker compose up -d
+````
+
+3. Parar a aplicação (mantendo o container e os dados prontos para voltar depois):
+````Bash
+docker compose stop
+````
+4. Voltar a rodar depois de ter parado com stop:
+````Bash
+docker compose start
+````
+5. Parar e remover o container (mantendo o volume com o banco de dados itens.db intacto):
+````Bash
+docker compose down
+````
+(Para subir de novo depois de um down, use docker compose up -d.)
+
+6. Comandos úteis do dia a dia
+Ver se o container está rodando:
+````Bash
+docker compose ps
+````
+7. Ver o que está acontecendo no servidor (logs em tempo real):
+````Bash
+docker compose logs -f
+````
+8. (Para sair dos logs sem parar o sistema, aperte Ctrl + C.)
+Reiniciar rapidamente:
+````Bash
+docker compose restart
+````
+**Dica**: Como configuramos restart: unless-stopped no docker-compose.yml, se você reiniciar o computador, o Docker sobe o sistema automaticamente em segundo plano — a menos que você tenha parado ele manualmente com docker compose stop ou docker compose down.
