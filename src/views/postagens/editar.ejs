@@ -12,7 +12,7 @@
       : '';
   %>
 
-  <form method="post" action="/editar/<%= postagem.id_postagem %>">
+  <form method="post" action="/editar/<%= postagem.id_postagem %>" enctype="multipart/form-data">
     <fieldset class="form-fieldset">
       <legend>Dados do Item</legend>
 
